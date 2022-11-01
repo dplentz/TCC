@@ -19,23 +19,32 @@ import {
 export default function ({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
   const auth = getAuth();
+  const [nome, setNome] = useState("");
+  const [dataNasc, setDataNasc] = useState(Date);
+  const [genero, setGenero] = useState(Boolean)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function register() {
-    setLoading(true);
-    await createUserWithEmailAndPassword(auth, email, password).catch(function (
-      error
-    ) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // ...
-      setLoading(false);
-      alert(errorMessage);
-    });
-  }
+  const handleSignUp = () => {
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
+        const reference = firestore
+          .collection("Usuario")
+          .doc(auth.currentUser.uid);
+        reference.set({
+          nome: nome,
+          email: email,
+          // password: password,
+          genero: genero,
+          dataNasc: dataNasc,
+        });
+        console.log("Registered with:", user.email);
+      })
+      .catch((error) => alert(error.message));
+  };
 
   return (
     <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
@@ -91,6 +100,26 @@ export default function ({ navigation }) {
               keyboardType="email-address"
               onChangeText={(text) => setEmail(text)}
             />
+            <TextInput
+              containerStyle={{ marginTop: 15 }}
+              placeholder="Enter your name"
+              value={email}
+              autoCapitalize="none"
+              autoCompleteType="off"
+              autoCorrect={false}
+              keyboardType="name"
+              onChangeText={(text) => setNome(text)}
+            />
+            <TextInput
+              containerStyle={{ marginTop: 15 }}
+              placeholder="Enter your data de aniversário"
+              value={email}
+              autoCapitalize="none"
+              autoCompleteType="off"
+              autoCorrect={false}
+              keyboardType="date"
+              onChangeText={(text) => setDataNasc(date)}
+            />
 
             <Text style={{ marginTop: 15 }}>Password</Text>
             <TextInput
@@ -103,10 +132,21 @@ export default function ({ navigation }) {
               secureTextEntry={true}
               onChangeText={(text) => setPassword(text)}
             />
+
+              <TextInput
+              containerStyle={{ marginTop: 15 }}
+              placeholder="Enter your gênero"
+              value={email}
+              autoCapitalize="none"
+              autoCompleteType="off"
+              autoCorrect={false}
+              keyboardType="name"
+              onChangeText={(text) => setGenero(text)}
+            />
             <Button
               text={loading ? "Loading" : "Create an account"}
               onPress={() => {
-                register();
+                handleSignUp();
               }}
               style={{
                 marginTop: 20,
