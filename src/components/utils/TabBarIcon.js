@@ -14,7 +14,7 @@ export default (props) => {
           ? isDarkmode
             ? themeColor.white100
             : themeColor.primary
-          : "rgb(143, 155, 179)"
+          : "#0bbc7d"
       }
     />
   );

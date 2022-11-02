@@ -110,7 +110,7 @@ export default function ({ navigation }) {
               }}
               style={{
                 marginTop: 20,
-                backgroundColor: RGB(11, 188, 125),
+                backgroundColor: "#0bbc7d",
               }}
               disabled={loading}
             />

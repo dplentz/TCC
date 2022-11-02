@@ -15,20 +15,20 @@ import {
   useTheme,
   themeColor,
 } from "react-native-rapi-ui";
+import DatePicker from 'react-native-datepicker';
 
 export default function ({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
   const auth = getAuth();
   const [nome, setNome] = useState("");
   const [dataNasc, setDataNasc] = useState(Date);
-  const [genero, setGenero] = useState(Boolean)
+  const [genero, setGenero] = useState("")
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSignUp = () => {
-    auth
-      .createUserWithEmailAndPassword(email, password)
+       createUserWithEmailAndPassword(email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
         const reference = firestore
@@ -100,26 +100,36 @@ export default function ({ navigation }) {
               keyboardType="email-address"
               onChangeText={(text) => setEmail(text)}
             />
+            <Text style={{ marginTop: 15 }}>Nome</Text>
             <TextInput
               containerStyle={{ marginTop: 15 }}
               placeholder="Enter your name"
-              value={email}
-              autoCapitalize="none"
+              value={nome}
+              autoCapitalize="sentences"
               autoCompleteType="off"
               autoCorrect={false}
-              keyboardType="name"
+              keyboardType="text"
               onChangeText={(text) => setNome(text)}
             />
-            <TextInput
-              containerStyle={{ marginTop: 15 }}
-              placeholder="Enter your data de aniversário"
-              value={email}
-              autoCapitalize="none"
-              autoCompleteType="off"
-              autoCorrect={false}
-              keyboardType="date"
-              onChangeText={(text) => setDataNasc(date)}
-            />
+            <Text style={{ marginTop: 15 }}>Data de aniversário</Text>
+            <DatePicker
+               date={dataNasc}
+               mode="date"
+               placeholder="select date"
+               format="MM/DD/YYYY"
+               confirmBtnText="Confirm"
+               cancelBtnText="Cancel"
+               onDateChange={(text) => setDataNasc(dataNasc)}
+                      customStyles={{
+                        dateInput: {
+                          borderWidth: 0,
+                          alignItems: 'flex-start'
+                        },
+                        dateText: {
+                          color: '#C0C0C0',
+                        }
+                      }}
+                    />
 
             <Text style={{ marginTop: 15 }}>Password</Text>
             <TextInput
@@ -132,15 +142,15 @@ export default function ({ navigation }) {
               secureTextEntry={true}
               onChangeText={(text) => setPassword(text)}
             />
-
+              <Text style={{ marginTop: 15 }}>Gênero</Text> 
               <TextInput
               containerStyle={{ marginTop: 15 }}
               placeholder="Enter your gênero"
-              value={email}
+              value={genero}
               autoCapitalize="none"
               autoCompleteType="off"
               autoCorrect={false}
-              keyboardType="name"
+              keyboardType="text"
               onChangeText={(text) => setGenero(text)}
             />
             <Button
@@ -150,7 +160,7 @@ export default function ({ navigation }) {
               }}
               style={{
                 marginTop: 20,
-                backgroundColor: RGB(11, 188, 125),
+                backgroundColor: "#0bbc7d",
               }}
               disabled={loading}
             />
