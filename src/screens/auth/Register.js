@@ -16,6 +16,7 @@ import {
   themeColor,
 } from "react-native-rapi-ui";
 import DatePicker from 'react-native-datepicker';
+import RNPickerSelect from "react-native-picker-select";
 
 export default function ({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
@@ -143,16 +144,15 @@ export default function ({ navigation }) {
               onChangeText={(text) => setPassword(text)}
             />
               <Text style={{ marginTop: 15 }}>Gênero</Text> 
-              <TextInput
-              containerStyle={{ marginTop: 15 }}
-              placeholder="Enter your gênero"
-              value={genero}
-              autoCapitalize="none"
-              autoCompleteType="off"
-              autoCorrect={false}
-              keyboardType="text"
-              onChangeText={(text) => setGenero(text)}
-            />
+              
+            <RNPickerSelect
+                 onValueChange={(genero) => setGenero(genero)}
+                 items={[
+                     { label: "Feminino", value: "Feminino" },
+                     { label: "Masculino", value: "Masculino" },
+                     { label: "Não binário", value: "N/B" },
+                 ]}
+             />
             <Button
               text={loading ? "Loading" : "Create an account"}
               onPress={() => {
