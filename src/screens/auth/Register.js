@@ -152,15 +152,16 @@ export default function ({ navigation }) {
                      { label: "Masculino", value: "Masculino" },
                      { label: "Não binário", value: "N/B" },
                  ]}
+                 style={{ inputAndroid: { color: "black" } }} useNativeAndroidPickerStyle={false}
              />
             <Button
               text={loading ? "Loading" : "Create an account"}
               onPress={() => {
                 handleSignUp();
               }}
+              color={"#0bbc9f"}
               style={{
                 marginTop: 20,
-                backgroundColor: "#0bbc7d",
               }}
               disabled={loading}
             />

@@ -108,9 +108,10 @@ export default function ({ navigation }) {
               onPress={() => {
                 login();
               }}
+              color={"#0bbc9f"}
               style={{
                 marginTop: 20,
-                backgroundColor: "#0bbc7d" ,
+                backgroundColor: "#0bbc9f" ,
               }}
               disabled={loading}
             />

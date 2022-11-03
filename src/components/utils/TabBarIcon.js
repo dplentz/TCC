@@ -13,7 +13,7 @@ export default (props) => {
         props.focused
           ? isDarkmode
             ? themeColor.white100
-            : themeColor.primary
+            : themeColor.info500
           : "#0bbc7d"
       }
     />
