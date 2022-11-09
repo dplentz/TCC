@@ -7,6 +7,7 @@ import {
   Image,
 } from "react-native";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../navigation/AppNavigator";
 import {
   Layout,
   Text,
@@ -20,21 +21,21 @@ import RNPickerSelect from "react-native-picker-select";
 
 export default function ({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
-  const auth = getAuth();
+  const Auth = getAuth();
   const [nome, setNome] = useState("");
-  const [dataNasc, setDataNasc] = useState(Date);
+  const [dataNasc, setDataNasc] = useState(new Date());
   const [genero, setGenero] = useState("")
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSignUp = () => {
-       createUserWithEmailAndPassword(email, password)
+       setLoading(true);
+       auth
+      .createUserWithEmailAndPassword(email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
-        const reference = firestore
-          .collection("Usuario")
-          .doc(auth.currentUser.uid);
+       const reference = firestore.collection("Usuario").doc(auth.currentUser.uid);
         reference.set({
           nome: nome,
           email: email,
@@ -44,8 +45,12 @@ export default function ({ navigation }) {
         });
         console.log("Registered with:", user.email);
       })
-      .catch((error) => alert(error.message));
+      .catch(function(error) {
+        alert(error.message); 
+        setLoading(false);
+      } );
   };
+
 
   return (
     <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
@@ -55,6 +60,7 @@ export default function ({ navigation }) {
             flexGrow: 1,
           }}
         >
+          
           <View
             style={{
               flex: 1,
@@ -109,18 +115,15 @@ export default function ({ navigation }) {
               autoCapitalize="sentences"
               autoCompleteType="off"
               autoCorrect={false}
-              keyboardType="text"
+              keyboardType="default"
               onChangeText={(text) => setNome(text)}
             />
             <Text style={{ marginTop: 15 }}>Data de aniversário</Text>
+
             <DatePicker
-               date={dataNasc}
-               mode="date"
-               placeholder="select date"
-               format="MM/DD/YYYY"
-               confirmBtnText="Confirm"
-               cancelBtnText="Cancel"
-               onDateChange={(text) => setDataNasc(dataNasc)}
+               value={dataNasc}
+               selected={dataNasc}
+               onChange={(date) => setDataNasc(date)}
                       customStyles={{
                         dateInput: {
                           borderWidth: 0,
@@ -146,6 +149,7 @@ export default function ({ navigation }) {
               <Text style={{ marginTop: 15 }}>Gênero</Text> 
               
             <RNPickerSelect
+                 value={genero}
                  onValueChange={(genero) => setGenero(genero)}
                  items={[
                      { label: "Feminino", value: "Feminino" },
