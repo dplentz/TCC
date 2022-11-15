@@ -3,32 +3,66 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   FlatList,
-  MeuEstiloheet,
-  StatusBar,
+    ActivityIndicator,
+    SafeAreaView,
 } from "react-native";
-import user from "../navigation/AppNavigator";
-import { render } from 'react-dom';
+import { auth, firestore } from "../navigation/firebase";
  
-export default function ({ navigation }) {
-    this.state = { 
-      nome: user.nome,
-	  email: user.email,
-	  genero: user.genero,
-      uid: user.uid,
-	  dataNasc: user.dataNasc,
-    }  
+  const Profile = () => {
+    const [loading, setLoading] = useState(true); // Set loading to true on component mount
+    const [usuarios, setUsuarios] = useState([]); // Initial empty array of users
+  
+    useEffect(() => {
+      const subscriber = firestore
+        .collection("Usuario")
+        .doc(auth.currentUser.uid)
+        .onSnapshot((querySnapshot) => {
+          const usuarios = [];
+          querySnapshot.forEach((documentSnapshot) => {
+            usuarios.push({
+              ...documentSnapshot.data(),
+              key: documentSnapshot.nome,
+            });
+          });
+          setUsuarios(usuarios);
+          setLoading(false);
+        });
+      // Unsubscribe from events when no longer in use
+      return () => subscriber();
+    }, []);
+  
+    if (loading) {
+      return <ActivityIndicator />;
+    }
+  
+    const Item = ({ nome }) => (
+      <View style={{
+        flex: 3,
+        paddingHorizontal: 20,
+        paddingBottom: 20,
+        backgroundColor: isDarkmode ? themeColor.dark : themeColor.white,
+      }}>
+          <Text style={{ alignSelf: "center",
+                padding: 30,}}>{nome}</Text>
+      </View>
+    );
+  
+    const renderItem = ({ item }) => <Item nome={item.nome} />;
     return (
 	 <Layout>
-    <View>
-        <Text>
-          {this.state.nome} ,oi
-		  {this.state.email},
-		  {this.state.genero},
-		  {this.state.dataNasc}
-        </Text>
-      </View>
+    <SafeAreaView>
+      <FlatList
+        data={usuarios}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.nome}
+        // refreshing={true}
+        // onRefresh={() => {
+        //   getCelulares();
+        // }}
+      />
+    </SafeAreaView>
 		</Layout>
 	);
-	
-};
+    }	
+    export default Profile;
 

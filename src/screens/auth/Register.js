@@ -6,8 +6,8 @@ import {
   KeyboardAvoidingView,
   Image,
 } from "react-native";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../navigation/AppNavigator";
+//import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+//import { auth } from "../../navigation/AppNavigator";
 import {
   Layout,
   Text,
@@ -18,10 +18,11 @@ import {
 } from "react-native-rapi-ui";
 import DatePicker from 'react-native-datepicker';
 import RNPickerSelect from "react-native-picker-select";
+import { auth, firestore } from "../../navigation/firebase";
 
 export default function ({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
-  const Auth = getAuth();
+ // const auth = getAuth();
   const [nome, setNome] = useState("");
   const [dataNasc, setDataNasc] = useState(new Date());
   const [genero, setGenero] = useState("")
@@ -37,6 +38,7 @@ export default function ({ navigation }) {
         const user = userCredentials.user;
        const reference = firestore.collection("Usuario").doc(auth.currentUser.uid);
         reference.set({
+          id: reference.id,
           nome: nome,
           email: email,
           // password: password,

@@ -19,6 +19,10 @@ import Register from "../screens/auth/Register";
 import ForgetPassword from "../screens/auth/ForgetPassword";
 import { AuthContext } from "../provider/AuthProvider";
 
+//import firebase from "firebase/compat/app";
+//import "firebase/compat/auth";
+//import "firebase/compat/firestore";
+
 // Better put your these secret keys in .env file
 const firebaseConfig = {
   apiKey: "AIzaSyDnTGgtAE2JWY_HKDlZ4iIkgfZr0WxG0Ts",
