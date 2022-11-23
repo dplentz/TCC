@@ -1,172 +1,123 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  ScrollView,
-  TouchableOpacity,
+  ActivityIndicator,
+  SafeAreaView,
   View,
-  KeyboardAvoidingView,
-  Image,
-} from "react-native";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import {
-  Layout,
+  FlatList,
+  MeuEstiloheet,
   Text,
-  TextInput,
-  Button,
-  useTheme,
-  themeColor,
-} from "react-native-rapi-ui";
+  StatusBar,
+} from "react-native";
+import { auth, firestore } from "../../navigation/firebase";
+//import MeuEstilo from "./meuestilo";
 
-export default function ({ navigation }) {
-  const { isDarkmode, setTheme } = useTheme();
-  const auth = getAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+const addForm = () => {
+    const [nomeCampo, setNomeCampo] = useState("");
+    const [value, setValue] = useState("");
+    const ref = firestore
+    .collection("Usuario")
+    .doc(auth.currentUser.uid)
+    .collection("Form").doc(auth.currentUser.uid).collection("Dados")
+    .doc();
 
-  async function register() {
-    setLoading(true);
-    await createUserWithEmailAndPassword(auth, email, password).catch(function (
-      error
-    ) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // ...
-      setLoading(false);
-      alert(errorMessage);
-    });
+  const enviarDados = () => {
+    ref
+      .set({
+        nomeCampo: nomeCampo,
+        value: value,
+        id: ref.id,
+      })
+      .then(() => {
+        alert("Dados adicionado com Sucesso");
+      });
+  };
+
+};
+
+const criarForm = () => {
+  const [loading, setLoading] = useState(true); // Set loading to true on component mount
+  const [forms, setForms] = useState([]); // Initial empty array of users
+
+  useEffect(() => {
+    const subscriber = firestore
+      .collection("Usuario")
+      .doc(auth.currentUser.uid)
+      .collection("Form").doc(auth.currentUser.uid).collection("Campos")
+      .onSnapshot((querySnapshot) => {
+        const forms = [];
+        querySnapshot.forEach((documentSnapshot) => {
+          forms.push({
+            ...documentSnapshot.data(),
+            key: documentSnapshot.nomeCampo,
+          });
+        });
+        setForms(forms);
+        setLoading(false);
+      });
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
+  }, []);
+
+  if (loading) {
+    return <ActivityIndicator />;
   }
 
-  return (
-    <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
-      <Layout>
-        <ScrollView
-          contentContainerStyle={{
-            flexGrow: 1,
-          }}
-        >
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: isDarkmode ? "#17171E" : themeColor.white100,
-            }}
-          >
-            <Image
-              resizeMode="contain"
-              style={{
-                height: 220,
-                width: 220,
-              }}
-              source={require("../../../assets/register.png")}
-            />
-          </View>
-          <View
-            style={{
-              flex: 3,
-              paddingHorizontal: 20,
-              paddingBottom: 20,
-              backgroundColor: isDarkmode ? themeColor.dark : themeColor.white,
-            }}
-          >
-            <Text
-              fontWeight="bold"
-              size="h3"
-              style={{
-                alignSelf: "center",
-                padding: 30,
-              }}
-            >
-              Register
-            </Text>
-            <Text>Email</Text>
-            <TextInput
-              containerStyle={{ marginTop: 15 }}
-              placeholder="Enter your email"
-              value={email}
-              autoCapitalize="none"
-              autoCompleteType="off"
-              autoCorrect={false}
-              keyboardType="email-address"
-              onChangeText={(text) => setEmail(text)}
-            />
-
-            <Text style={{ marginTop: 15 }}>Password</Text>
-            <TextInput
-              containerStyle={{ marginTop: 15 }}
-              placeholder="Enter your password"
-              value={password}
-              autoCapitalize="none"
-              autoCompleteType="off"
-              autoCorrect={false}
-              secureTextEntry={true}
-              onChangeText={(text) => setPassword(text)}
-            />
-            <Button
-              text={loading ? "Loading" : "Create an account"}
-              onPress={() => {
-                register();
-              }}
-              style={{
-                marginTop: 20,
-                backgroundColor: "#0bbc7d",
-              }}
-              disabled={loading}
-            />
-
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginTop: 15,
-                justifyContent: "center",
-              }}
-            >
-              <Text size="md">Already have an account?</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("Login");
-                }}
-              >
-                <Text
-                  size="md"
-                  fontWeight="bold"
-                  style={{
-                    marginLeft: 5,
-                  }}
-                >
-                  Login here
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginTop: 30,
-                justifyContent: "center",
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => {
-                  isDarkmode ? setTheme("light") : setTheme("dark");
-                }}
-              >
-                <Text
-                  size="md"
-                  fontWeight="bold"
-                  style={{
-                    marginLeft: 5,
-                  }}
-                >
-                  {isDarkmode ? "☀️ light theme" : "🌑 dark theme"}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </ScrollView>
-      </Layout>
-    </KeyboardAvoidingView>
+  const Item = ({ nomeCampo }) => (
+    <View //style={MeuEstilo.item}
+    >
+      <Text //style={MeuEstilo.title}
+      >{nomeCampo}</Text>
+    </View>
   );
-}
+
+  const renderItem = ({ item }) => <Item nomeCampo={item.nomeCampo} />;
+
+  // const getCelulares= ()=>{
+  //   setCasas([]);
+  //   firestore
+  //   .collection('Casa')
+  //   .onSnapshot(querySnapshot=>{
+  //     //querySnapshot.forEach(documentSnapshot=>{
+  //     querySnapshot.docChanges().forEach(change=>{
+
+  //       casas.push({...change.doc.data(),
+  //         key: change.endereco,
+  //       });
+  //     });
+  //     setCasas(casas);
+  //     // setCarregando(false);
+  //   });
+  //   // return()=>subscriber();
+  // };
+
+  // // const observador = firestore.collection('Casa')
+  // // .onSnapshot(querySnapshot => {
+  // //   querySnapshot.docChanges().forEach(change => {
+  // //     if (change.type === 'added') {
+  // //       console.log('Novo Casa: ', change.doc.data());
+  // //     }
+  // //     if (change.type === 'modified') {
+  // //       console.log('Casa modificado: ', change.doc.data());
+  // //     }
+  // //     if (change.type === 'removed') {
+  // //       console.log('Casa removido: ', change.doc.data());
+  // //     }
+  // //   });
+  // // });
+
+  return (
+    <SafeAreaView //style={MeuEstilo.containerlistar}
+    >
+    <FlatList
+      data={usuarios}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.nomeCampo}
+      // refreshing={true}
+      // onRefresh={() => {
+      //   getCelulares();
+      // }}
+    />
+  </SafeAreaView>
+  );
+};
+export default addForm;

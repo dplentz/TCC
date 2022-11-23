@@ -36,9 +36,9 @@ export default function ({ navigation }) {
               onPress={() => Linking.openURL("https://rapi-ui.kikiding.space/")}
             />
             <Button
-              text="Go to second screen"
+              text="Criar Formulário"
               onPress={() => {
-                navigation.navigate("SecondScreen");
+                navigation.navigate("CreateForm");
               }}
               style={{
                 marginTop: 10,
