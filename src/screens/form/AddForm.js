@@ -7,19 +7,51 @@ import {
   MeuEstiloheet,
   Text,
   StatusBar,
+  TextInput,
 } from "react-native";
 import { auth, firestore } from "../../navigation/firebase";
 //import MeuEstilo from "./meuestilo";
 
-const addForm = () => {
-    const [nomeCampo, setNomeCampo] = useState("");
-    const [value, setValue] = useState("");
+const AddForm = (props) => {
+  const [forms, setForms] = useState([]); // Initial empty array of users
+  const [loading, setLoading] = useState(true); // Set loading to true on component mount
+  let lista=forms
+  const [nomeCampo, setNomeCampo] = useState("");
+
+  const [value, setValue] = useState("");
     const ref = firestore
     .collection("Usuario")
     .doc(auth.currentUser.uid)
     .collection("Form").doc(auth.currentUser.uid).collection("Dados")
     .doc();
 
+  
+    useEffect(() => {
+      const subscriber = firestore
+        .collection("Usuario")
+        .doc(auth.currentUser.uid)
+        .collection("Form").doc(auth.currentUser.uid).collection("Campos")
+        .onSnapshot((querySnapshot) => {
+          const forms = [];
+          querySnapshot.forEach((documentSnapshot) => {
+            forms.push({
+              ...documentSnapshot.data(),
+              key: documentSnapshot.id,
+            });
+          });
+          setForms(forms);
+          lista=forms
+          setLoading(false);
+        });
+      // Unsubscribe from events when no longer in use
+      return () => subscriber();
+    }, []);
+  
+    if (loading) {
+      return <ActivityIndicator />;
+    }
+  
+  
   const enviarDados = () => {
     ref
       .set({
@@ -32,36 +64,9 @@ const addForm = () => {
       });
   };
 
-};
 
-const criarForm = () => {
-  const [loading, setLoading] = useState(true); // Set loading to true on component mount
-  const [forms, setForms] = useState([]); // Initial empty array of users
 
-  useEffect(() => {
-    const subscriber = firestore
-      .collection("Usuario")
-      .doc(auth.currentUser.uid)
-      .collection("Form").doc(auth.currentUser.uid).collection("Campos")
-      .onSnapshot((querySnapshot) => {
-        const forms = [];
-        querySnapshot.forEach((documentSnapshot) => {
-          forms.push({
-            ...documentSnapshot.data(),
-            key: documentSnapshot.nomeCampo,
-          });
-        });
-        setForms(forms);
-        setLoading(false);
-      });
-    // Unsubscribe from events when no longer in use
-    return () => subscriber();
-  }, []);
-
-  if (loading) {
-    return <ActivityIndicator />;
-  }
-
+//const criarForm = () => {
   const Item = ({ nomeCampo }) => (
     <View //style={MeuEstilo.item}
     >
@@ -72,52 +77,27 @@ const criarForm = () => {
 
   const renderItem = ({ item }) => <Item nomeCampo={item.nomeCampo} />;
 
-  // const getCelulares= ()=>{
-  //   setCasas([]);
-  //   firestore
-  //   .collection('Casa')
-  //   .onSnapshot(querySnapshot=>{
-  //     //querySnapshot.forEach(documentSnapshot=>{
-  //     querySnapshot.docChanges().forEach(change=>{
-
-  //       casas.push({...change.doc.data(),
-  //         key: change.endereco,
-  //       });
-  //     });
-  //     setCasas(casas);
-  //     // setCarregando(false);
-  //   });
-  //   // return()=>subscriber();
-  // };
-
-  // // const observador = firestore.collection('Casa')
-  // // .onSnapshot(querySnapshot => {
-  // //   querySnapshot.docChanges().forEach(change => {
-  // //     if (change.type === 'added') {
-  // //       console.log('Novo Casa: ', change.doc.data());
-  // //     }
-  // //     if (change.type === 'modified') {
-  // //       console.log('Casa modificado: ', change.doc.data());
-  // //     }
-  // //     if (change.type === 'removed') {
-  // //       console.log('Casa removido: ', change.doc.data());
-  // //     }
-  // //   });
-  // // });
+  const exemplo =()=>{
+    listaCampos = lista.map(campoInfo => (
+      <TextInput placeholder={campoInfo.nomeCampo} value={Text}></TextInput>
+    ))
+  }
 
   return (
     <SafeAreaView //style={MeuEstilo.containerlistar}
     >
     <FlatList
-      data={usuarios}
+      data={forms}
       renderItem={renderItem}
-      keyExtractor={(item) => item.nomeCampo}
-      // refreshing={true}
-      // onRefresh={() => {
-      //   getCelulares();
-      // }}
-    />
+      keyExtractor={(item) => item.id}
+  />
+    {exemplo()}
+    {listaCampos = lista.map(campoInfo => (
+      <TextInput placeholder={campoInfo.nomeCampo} value={Text}></TextInput>
+    ))}
+        {listaCampos==="Hora" ?<Text>Aqui iria o TextInput {lista.length}</Text>:<Text>Este é o resultado {lista.length}</Text>}
+
   </SafeAreaView>
   );
-};
-export default addForm;
+}
+export default AddForm;

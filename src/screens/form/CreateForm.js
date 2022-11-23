@@ -1,12 +1,19 @@
 import { useNavigation } from "@react-navigation/core";
 import React, { useState } from "react";
 import {
-  Button,
+  ScrollView,
+  TouchableOpacity,
   View,
+  KeyboardAvoidingView,
+  Image,
+} from "react-native";
+import {
+  Layout,
   Text,
   TextInput,
-  TouchableOpacity,
-  KeyboardAvoidingView,
+  Button,
+  useTheme,
+  themeColor,
 } from "react-native-rapi-ui";
 import { auth, firestore } from "../../navigation/firebase";
 
@@ -29,17 +36,22 @@ export default function ({ navigation }){
       })
       .then(() => {
         alert("Campo " + nomeCampo + " Adicionado com Sucesso");
-        navigation.navigate("CreateForm");
+        navigation.navigate("AddForm");
       });
   };
 
 
   return (
-    <KeyboardAvoidingView //style={MeuEstilo.containerlistar} 
-    behavior="padding">
+    <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
+      <Layout>
+    <ScrollView
+      contentContainerStyle={{
+        flexGrow: 1,
+      }}
+    >
       <View
             style={{
-              flex: 3,
+              flex: 1,
               paddingHorizontal: 20,
               paddingBottom: 20,
         
@@ -69,7 +81,7 @@ export default function ({ navigation }){
          <Button
               text="Criar Formulário"
               onPress={() => {
-                navigation.navigate("CreateForm");
+                enviarDados();
               }}
               style={{
                 marginTop: 10,
@@ -78,6 +90,8 @@ export default function ({ navigation }){
             />
         
       </View>
+      </ScrollView>
+      </Layout>
     </KeyboardAvoidingView>
   );
 };

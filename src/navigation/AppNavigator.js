@@ -18,6 +18,7 @@ import Login from "../screens/auth/Login";
 import Register from "../screens/auth/Register";
 import ForgetPassword from "../screens/auth/ForgetPassword";
 import CreateForm from "../screens/form/CreateForm";
+import AddForm from "../screens/form/AddForm";
 import { AuthContext } from "../provider/AuthProvider";
 
 //import firebase from "firebase/compat/app";
@@ -64,6 +65,7 @@ const Main = () => {
       <MainStack.Screen name="MainTabs" component={MainTabs} />
       <MainStack.Screen name="SecondScreen" component={SecondScreen} />
       <MainStack.Screen name="CreateForm" component={CreateForm} />
+      <MainStack.Screen name="AddForm" component={AddForm} />
       
     </MainStack.Navigator>
   );

@@ -19,8 +19,8 @@ import {
 export default function ({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
   const auth = getAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("dudaplentz18@gmail.com");
+  const [password, setPassword] = useState("deskjet12");
   const [loading, setLoading] = useState(false);
 
   async function login() {

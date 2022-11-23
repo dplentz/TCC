@@ -45,6 +45,16 @@ export default function ({ navigation }) {
                 backgroundColor: "#0bbc7d",
               }}
             />
+              <Button
+              text="Add Formulário"
+              onPress={() => {
+                navigation.navigate("AddForm");
+              }}
+              style={{
+                marginTop: 10,
+                backgroundColor: "#0bbc7d",
+              }}
+            />
             <Button
               status="danger"
               text="Logout"
