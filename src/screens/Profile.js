@@ -21,7 +21,7 @@ import { auth, firestore } from "../navigation/firebase";
           querySnapshot.forEach((documentSnapshot) => {
             usuarios.push({
               ...documentSnapshot.data(),
-              key: documentSnapshot.nome,
+              key: documentSnapshot.id,
             });
           });
           setUsuarios(usuarios);
@@ -47,18 +47,14 @@ import { auth, firestore } from "../navigation/firebase";
       </View>
     );
   
-    const renderItem = ({ item }) => <Item nome={item.nome} />;
+    const renderItem = ({ item }) => <Item nome={item.id} />;
     return (
 	 <Layout>
     <SafeAreaView>
       <FlatList
         data={usuarios}
         renderItem={renderItem}
-        keyExtractor={(item) => item.nome}
-        // refreshing={true}
-        // onRefresh={() => {
-        //   getCelulares();
-        // }}
+        keyExtractor={(item) => item.id}
       />
     </SafeAreaView>
 		</Layout>
