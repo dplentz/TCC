@@ -10,10 +10,12 @@ import {
   TextInput,
 } from "react-native";
 import  { Button,} from "react-native-rapi-ui";
+//import DatePicker from 'react-native-datepicker';
 import { auth, firestore } from "../../navigation/firebase";
 //import MeuEstilo from "./meuestilo";
 
-const AddForm = (props) => {
+const AddForm = (props) => 
+{
   const [forms, setForms] = useState([]); // Initial empty array of users
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
   let lista=forms
@@ -21,7 +23,7 @@ const AddForm = (props) => {
   //const [nomeCampo, setNomeCampo] = useState("");
   const [dados, setDados] = useState([]);
   let varauxiliar='';
-  const [value, setValue] = useState("");
+  const [valor, setValor] = useState("");
     const ref = firestore
     .collection("Usuario")
     .doc(auth.currentUser.uid)
@@ -94,14 +96,38 @@ const AddForm = (props) => {
     <SafeAreaView //style={MeuEstilo.containerlistar}
     >
 {listaCampos = lista.map(campoInfo => {
-                switch (campoInfo.value) {
-                    case "texto":
+                switch (campoInfo.valor) {
+                    case "Text":
                         return ( 
                         <TextInput placeholder={campoInfo.nomeCampo} value={""}></TextInput>
                           )
-                    case "Hora":
+                    case "Hour":
                         return ( 
-                        <Text>Tipo data {campoInfo.nomeCampo} </Text>
+                        <Text>Tipo Hora {campoInfo.nomeCampo} </Text>
+                              )
+                    case "Date":
+                        return(
+                          <Text>{campoInfo.nomeCampo}</Text>
+                          /*<Text>{campoInfo.nomeCampo}
+                          <DatePicker
+                          value={date}
+                          selected={dados[i]}
+                          onChange={(date) => setDataNasc(date)}
+                                 customStyles={{
+                                   dateInput: {
+                                     borderWidth: 0,
+                                     alignItems: 'flex-start'
+                                   },
+                                   dateText: {
+                                     color: '#C0C0C0',
+                                   }
+                                 }}
+                               /> </Text>*/
+                              )
+                    case "Select":
+                        return( 
+                          <Text>{campoInfo.nomeCampo}</Text>                 
+                      
                               )
                         }
                       })
@@ -112,6 +138,7 @@ const AddForm = (props) => {
       FUNCIONAVA A IMPRESSÃO NA VIEW    
    (      <TextInput placeholder={campoInfo.nomeCampo} value={nomeCampo}
       onChangeText={(text) => setNomeCampo(text)}></TextInput>
+      
     ))}}
 
 

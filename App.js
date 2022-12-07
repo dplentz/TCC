@@ -5,6 +5,9 @@ import { ThemeProvider } from "react-native-rapi-ui";
 import { LogBox } from "react-native";
 
 export default function App() {
+  require('react-dom');
+window.React2 = require('react');
+console.log(window.React1 === window.React2);
   const images = [
     require("./assets/icon.png"),
     require("./assets/splash.png"),

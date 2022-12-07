@@ -16,19 +16,41 @@ import {
   useTheme,
   themeColor,
 } from "react-native-rapi-ui";
-import DatePicker from 'react-native-datepicker';
-import RNPickerSelect from "react-native-picker-select";
+//import DatePicker from 'react-native-datepicker';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+//import  RNDateTimePicker from '@react-native-community/datetimepicker';
+//import RNPickerSelect from "react-native-picker-select";
 import { auth, firestore } from "../../navigation/firebase";
 
-export default function ({ navigation }) {
+export default function ({ navigation }) 
+{
   const { isDarkmode, setTheme } = useTheme();
  // const auth = getAuth();
   const [nome, setNome] = useState("");
   const [dataNasc, setDataNasc] = useState(new Date());
   const [genero, setGenero] = useState("")
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [dataString, setDataString]=useState('')
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const handleConfirm = (date) => {
+    console.warn("A data foi selecionada: "+ date);
+    const formattedDate=date.getDate().toString().padStart(2, "0") + "/" + ((date.getMonth()+1).toString().padStart(2, "0"))  + "/" + date.getFullYear();
+    console.log(formattedDate)
+    setDataString(formattedDate)
+    setDataNasc(date)
+    hideDatePicker();
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
 
   const handleSignUp = () => {
        setLoading(true);
@@ -52,8 +74,17 @@ export default function ({ navigation }) {
         setLoading(false);
       } );
   };
-
-
+ /* <RNPickerSelect
+  value={genero}
+  onValueChange={(genero) => setGenero(genero)}
+  items={[
+      { label: "Feminino", value: "Feminino" },
+      { label: "Masculino", value: "Masculino" },
+      { label: "Não binário", value: "N/B" },
+  ]}
+  style={{ inputAndroid: { color: "black" } }} useNativeAndroidPickerStyle={false}
+/>        
+*/
   return (
     <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
       <Layout>
@@ -121,21 +152,14 @@ export default function ({ navigation }) {
               onChangeText={(text) => setNome(text)}
             />
             <Text style={{ marginTop: 15 }}>Data de aniversário</Text>
-
-            <DatePicker
-               value={dataNasc}
-               selected={dataNasc}
-               onChange={(date) => setDataNasc(date)}
-                      customStyles={{
-                        dateInput: {
-                          borderWidth: 0,
-                          alignItems: 'flex-start'
-                        },
-                        dateText: {
-                          color: '#C0C0C0',
-                        }
-                      }}
-                    />
+            <Button title="Calendário" onPress={showDatePicker} />
+            <DateTimePickerModal
+                          isVisible={isDatePickerVisible}
+                          mode="date"
+                          onConfirm={handleConfirm}
+                          onCancel={hideDatePicker}
+                               />  
+                     <Text>Data: {dataString}</Text>
 
             <Text style={{ marginTop: 15 }}>Password</Text>
             <TextInput
@@ -149,17 +173,6 @@ export default function ({ navigation }) {
               onChangeText={(text) => setPassword(text)}
             />
               <Text style={{ marginTop: 15 }}>Gênero</Text> 
-              
-            <RNPickerSelect
-                 value={genero}
-                 onValueChange={(genero) => setGenero(genero)}
-                 items={[
-                     { label: "Feminino", value: "Feminino" },
-                     { label: "Masculino", value: "Masculino" },
-                     { label: "Não binário", value: "N/B" },
-                 ]}
-                 style={{ inputAndroid: { color: "black" } }} useNativeAndroidPickerStyle={false}
-             />
             <Button
               text={loading ? "Loading" : "Create an account"}
               onPress={() => {

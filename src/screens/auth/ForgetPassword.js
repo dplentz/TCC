@@ -16,7 +16,8 @@ import {
   themeColor,
 } from "react-native-rapi-ui";
 
-export default function ({ navigation }) {
+export default function ({ navigation }) 
+{
   const { isDarkmode, setTheme } = useTheme();
   const auth = getAuth();
   const [email, setEmail] = useState("");
