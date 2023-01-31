@@ -11,7 +11,7 @@ import TabBarText from "../components/utils/TabBarText";
 import Home from "../screens/Home";
 import SecondScreen from "../screens/SecondScreen";
 import About from "../screens/About";
-import Profile from "../screens/Profile";
+import Profile from "../screens/Profile.tsx";
 import Loading from "../screens/utils/Loading";
 // Auth screens
 import Login from "../screens/auth/Login";

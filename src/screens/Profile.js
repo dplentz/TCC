@@ -6,7 +6,7 @@ import {
     ActivityIndicator,
     SafeAreaView,
 } from "react-native";
-import { auth, firestore } from "../navigation/firebase";
+import { auth, firestore } from "./navigation/firebase";
  
   const Profile = () => {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
