@@ -42,6 +42,7 @@ const Profile=() =>{
       const camera: AlertButton ={text:"Abrir a câmera", onPress:()=> openCamera()}
       Alert.alert ('Local da foto','escolha', [galeria, camera])
   }
+ 
 
   const escolhefoto = ()=>{
   Alert.alert(
@@ -67,7 +68,6 @@ const Profile=() =>{
     }
   );
   }
-  
   
   const showImagePicker = async () => {
     // Ask the user for the permission to access the media library
@@ -152,6 +152,8 @@ const Profile=() =>{
       <Text style={{ marginTop: 5, }}>Id:{usuario.id}</Text>
       <Text style={{ marginTop: 10, }}>Nome:{usuario.nome}</Text>
       <Text style={{ marginTop: 10, }}>E-mail:{usuario.email}</Text>
+      <Text style={{ marginTop: 10, }}>Genero:{usuario.genero}</Text>
+      <Text style={{ marginTop: 10, }}>Data Nascimento:{usuario.dataString}</Text>
       <Button title= "Escolher a Foto" onPress={escolhefoto}// style={{ marginTop: 10, }}
       />
     </View>

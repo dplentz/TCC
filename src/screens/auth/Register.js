@@ -20,6 +20,7 @@ import {
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 //import  RNDateTimePicker from '@react-native-community/datetimepicker';
 //import RNPickerSelect from "react-native-picker-select";
+import DropDownPicker from 'react-native-dropdown-picker'
 import { auth, firestore } from "../../navigation/firebase";
 
 export default function ({ navigation }) 
@@ -34,6 +35,7 @@ export default function ({ navigation })
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -66,6 +68,7 @@ export default function ({ navigation })
           // password: password,
           genero: genero,
           dataNasc: dataNasc,
+          dataString: dataString,
         });
         console.log("Registered with:", user.email);
       })
@@ -172,7 +175,20 @@ export default function ({ navigation })
               secureTextEntry={true}
               onChangeText={(text) => setPassword(text)}
             />
-              <Text style={{ marginTop: 15 }}>Gênero</Text> 
+              <Text style={{ marginTop: 15 }}>Gênero</Text>
+
+              <DropDownPicker
+          items={[
+              {label: 'Feminino', value: 'Feminino'},
+              {label: 'Masculino', value: 'Masculino'},
+              {label: 'Outro', value: 'Outro'},
+          ]}
+          setOpen={setOpen}
+          open={open}
+          //setvalue={setGenero}
+          value ={genero}
+          onSelectItem={(genero) => setGenero(genero)}
+      /> 
             <Button
               text={loading ? "Loading" : "Create an account"}
               onPress={() => {
