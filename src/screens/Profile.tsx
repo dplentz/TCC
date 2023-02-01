@@ -7,7 +7,7 @@ import * as ImagePicker from "expo-image-picker";
 import { Usuario } from "../../model/Usuario";
 
 const Profile=() =>{
-  const navigation =useNavigation();
+  //const navigation =useNavigation();
   // The path of the picked image
   const [pickedImagePath, setPickedImagePath] = useState("");
   const [usuario, setUsuario] = useState<Partial<Usuario>>({})
@@ -149,12 +149,13 @@ const Profile=() =>{
             )}
       </View>
       </Pressable>
-      <Text style={{ marginTop: 5, }}>Id:{usuario.id}</Text>
       <Text style={{ marginTop: 10, }}>Nome:{usuario.nome}</Text>
       <Text style={{ marginTop: 10, }}>E-mail:{usuario.email}</Text>
       <Text style={{ marginTop: 10, }}>Genero:{usuario.genero}</Text>
-      <Text style={{ marginTop: 10, }}>Data Nascimento:{usuario.dataString}</Text>
-      <Button title= "Escolher a Foto" onPress={escolhefoto}// style={{ marginTop: 10, }}
+      <Text style={{ marginTop: 10, }}>Data de nascimento:{usuario.dataString}</Text>
+      <Button title= "Escolher a Foto" onPress={escolhefoto}
+      color={"#0bbc9f"}
+      style={{ marginTop: 10, }}
       />
     </View>
   );

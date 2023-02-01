@@ -15,6 +15,7 @@ import {
   useTheme,
   themeColor,
 } from "react-native-rapi-ui";
+import DropDownPicker from 'react-native-dropdown-picker'
 //import RNPickerSelect from "react-native-picker-select";
 import { auth, firestore } from "../../navigation/firebase";
 
@@ -23,6 +24,7 @@ export default function ({ navigation })
   
   const [nomeCampo, setNomeCampo] = useState("");
   const [valor, setValor] = useState("");
+  const [open, setOpen] = useState(false);
   const ref = firestore
     .collection("Usuario")
     .doc(auth.currentUser.uid)
@@ -94,6 +96,18 @@ export default function ({ navigation })
           //style={MeuEstilo.input}
         />
 
+        <DropDownPicker
+          items={[
+            { label: "Texto", value: "text" },
+            { label: "Seleção", value: "select" },
+            { label: "Horário", value: "hour" },
+          ]}
+          setOpen={setOpen}
+          open={open}
+          //setvalue={setGenero}
+          value ={valor}
+          onSelectItem={(valor) => setValor(valor)}
+         /> 
       </View>
 
       <View style={{
@@ -108,9 +122,10 @@ export default function ({ navigation })
               onPress={() => {
                 enviarDados();
               }}
+              color={"#0bbc9f"}
               style={{
                 marginTop: 10,
-                backgroundColor: "#0bbc7d",
+                color: "#0bbc9f",
               }}
             />
         
