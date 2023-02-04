@@ -1,23 +1,12 @@
 import React, { useState, useEffect } from "react";
 import {useNavigation} from "@react-navigation/core";
-import { ActivityIndicator,View,  StyleSheet, Image, Pressable, AlertButton, Alert} from "react-native";
+import { ActivityIndicator,View, Text, StyleSheet, Image, Button, Pressable, AlertButton, Alert} from "react-native";
 import { storage, auth, firestore } from "../navigation/firebase";
 import { getStorage, uploadBytes } from "firebase/storage"; //access the storage databaSse
 import * as ImagePicker from "expo-image-picker";
 import { Usuario } from "../../model/Usuario";
-import {
-  Layout,
-  Button,
-  Text,
-  TopNav,
-  Section,
-  SectionContent,
-  useTheme,
-  TextInput,
-} from "react-native-rapi-ui";
 
-export default function ({ navigation}) {
- 
+export default function ({ navigation }) {
   //const navigation =useNavigation();
   // The path of the picked image
   const [pickedImagePath, setPickedImagePath] = useState("");
@@ -47,12 +36,7 @@ export default function ({ navigation}) {
   }
 
 
-//Outra forma de opções de botão
-  const escolhefoto2 = ()=>{
-      const galeria: AlertButton ={text:"Abrir a galeria", onPress:()=> showImagePicker()}
-      const camera: AlertButton ={text:"Abrir a câmera", onPress:()=> openCamera()}
-      Alert.alert ('Local da foto','escolha', [galeria, camera])
-  }
+
  
 
   const escolhefoto = ()=>{
@@ -145,7 +129,6 @@ export default function ({ navigation}) {
     }
   };
 
-
   return (
     <View style={styles.screen}>
       <View style={styles.buttonContainer}>
@@ -161,31 +144,21 @@ export default function ({ navigation}) {
             )}
       </View>
       </Pressable>
-     
-     
-
-<Section><SectionContent> 
-       <Text style={styles.itens}>Nome: {usuario.nome}</Text>
-       <Text style={styles.itens}>E-mail: {usuario.email}</Text>
-       <Text style={styles.itens}>Genero: {usuario.genero}</Text>
-       <Text style={styles.itens}>Data de nascimento: {usuario.dataString}</Text>
-       
-       <Button text="Escolher a foto" onPress={escolhefoto}  
+      <Text style={{ marginTop: 10, }}>Nome:{usuario.nome}</Text>
+      <Text style={{ marginTop: 10, }}>E-mail:{usuario.email}</Text>
+      <Text style={{ marginTop: 10, }}>Genero:{usuario.genero}</Text>
+      <Text style={{ marginTop: 10, }}>Data de nascimento:{usuario.dataString}</Text>
+      <Button title= "Escolher a Foto" onPress={escolhefoto}  
       color={"#0bbc9f"}
-       style={{ marginTop: 10, height: 45}}
+      //style={{ marginTop: 10, }}
       />
-     <Button text="Alterar dados do perfil" onPress={() => {
-      navigation.navigate("EditProfile");
+     <Button title= "Alterar dados do perfil" onPress={() => {
+      navigation.navigate("AddForm");
      }}  
       color={"#0bbc9f"}
-      style={{ marginTop: 15, marginVertical: 5, height: 45}}
+      //style={{ marginTop: 10, }}
       />
-      </SectionContent>
-      </Section>
-       
-      
     </View>
-    
   );
 }
 
@@ -197,16 +170,6 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     padding: 30,
-  },
-  itens:{
-    marginTop: 10, padding:15, 
-    textAlign: 'center',
-    backgroundColor: "#9fffe0",
-    width: 300, height: 50, alignItems: "center" ,
-    marginVertical: 10,
-    borderRadius: 5,
-    opacity: 0.7,
-    
   },
   image: {
     width: 200,

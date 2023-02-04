@@ -9,10 +9,11 @@ import {
   StatusBar,
   TextInput,
 } from "react-native";
-import  { Button,} from "react-native-rapi-ui";
+import  { Button, Layout, Section, SectionContent} from "react-native-rapi-ui";
 //import DatePicker from 'react-native-datepicker';
 import { auth, firestore } from "../../navigation/firebase";
 //import MeuEstilo from "./meuestilo";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const AddForm = (props) => 
 {
@@ -20,6 +21,8 @@ const AddForm = (props) =>
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
   let lista=forms
   let listaCampos='';
+  const listaDados= useState([]);
+  const i = useState[1];
   //const [nomeCampo, setNomeCampo] = useState("");
   const [dados, setDados] = useState([]);
   let varauxiliar='';
@@ -30,7 +33,18 @@ const AddForm = (props) =>
     .collection("Form").doc(auth.currentUser.uid).collection("Dados")
     .doc();
 
+    const handleConfirm = (date) => {
+      console.warn("A data foi selecionada: "+ date);
+      const formattedDate=date.getDate().toString().padStart(2, "0") + "/" + ((date.getMonth()+1).toString().padStart(2, "0"))  + "/" + date.getFullYear();
+      console.log(formattedDate)
+      setDataString(formattedDate)
+      setDataNasc(date)
+      hideDatePicker();
+    };
   
+    const hideDatePicker = () => {
+      setDatePickerVisibility(false);
+    };
     useEffect(() => {
       const subscriber = firestore
         .collection("Usuario")
@@ -56,12 +70,25 @@ const AddForm = (props) =>
       return <ActivityIndicator />;
     }
   
- 
-  const enviarDados = () => {
+    const enviarDados = () => {
+      ref
+        .set({
+        
+          nomeCampo: nomeCampo,
+          valor: valor,
+          id: ref.id,
+        })
+        .then(() => {
+          alert("Campo " + nomeCampo + " Adicionado com Sucesso");
+          navigation.navigate("AddForm");
+        });
+    };
+  const enviarDadosO = () => {
     ref.onSnapshot((querySnapshot) => {
       const dados = [];
       querySnapshot.forEach((documentSnapshot) => {
-        dados.set({
+        dados.set({  
+          //listaDados[i]: listaDados[], 
           ...documentSnapshot.data(),
           key: documentSnapshot.id,
         });
@@ -91,23 +118,40 @@ const AddForm = (props) =>
       <TextInput placeholder={campoInfo.nomeCampo} value={Text}></TextInput>
     ))
   }*/
-
+ 
   return (
+    <Layout>
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        marginHorizontal: 10,
+      }}
+    >
+      <Section>
+        <SectionContent>
     <SafeAreaView //style={MeuEstilo.containerlistar}
     >
 {listaCampos = lista.map(campoInfo => {
-                switch (campoInfo.valor) {
-                    case "Text":
+                     <Text>num {campoInfo.uid} </Text>
+                                switch (campoInfo.valor) {
+                    case "String":
+                      listaDados[lista]=listaDados[campoInfo.nomeCampo];
                         return ( 
-                        <TextInput placeholder={campoInfo.nomeCampo} value={""}></TextInput>
+                          
+                        <TextInput placeholder={campoInfo.nomeCampo} value={''}></TextInput>
                           )
-                    case "Hour":
+                    case "Boolean":
+                      listaDados[lista]=listaDados[campoInfo.nomeCampo];
                         return ( 
-                        <Text>Tipo Hora {campoInfo.nomeCampo} </Text>
+                        <Text>Tipo Bool {campoInfo.nomeCampo} </Text>
                               )
                     case "Date":
-                        return(
-                          <Text>{campoInfo.nomeCampo}</Text>
+                      listaDados[lista]=listaDados[campoInfo.nomeCampo];
+                        return( <Text>Tipo Data {campoInfo.nomeCampo} </Text>
+                          //<View></View>
+                        
                           /*<Text>{campoInfo.nomeCampo}
                           <DatePicker
                           value={date}
@@ -125,6 +169,7 @@ const AddForm = (props) =>
                                /> </Text>*/
                               )
                     case "Select":
+                      listaDados[lista]=listaDados[campoInfo.nomeCampo];
                         return( 
                           <Text>{campoInfo.nomeCampo}</Text>                 
                       
@@ -186,13 +231,18 @@ const AddForm = (props) =>
               onPress={() => {
                 enviarDados();
               }}
+              color= {'#0bbc9f'}
               style={{
                 marginTop: 10,
-                backgroundColor: "#0bbc7d",
+                backgroundColor: "#0bbc9f",
               }}
             />
 
   </SafeAreaView>
+  </SectionContent>
+        </Section>
+      </View>
+    </Layout>
   );
   //{listaCampos.value==="Hora" ?<Text>Aqui iria o TextInput {lista.length}</Text>:<Text>Este é o resultado {lista.length}</Text>}
 

@@ -13,6 +13,7 @@ import SecondScreen from "../screens/SecondScreen";
 import About from "../screens/About";
 import Profile from "../screens/Profile.tsx";
 import Loading from "../screens/utils/Loading";
+//import EditProfile from "../screen/EditProfile";
 // Auth screens
 import Login from "../screens/auth/Login";
 import Register from "../screens/auth/Register";
@@ -66,10 +67,23 @@ const Main = () => {
       <MainStack.Screen name="SecondScreen" component={SecondScreen} />
       <MainStack.Screen name="CreateForm" component={CreateForm} />
       <MainStack.Screen name="AddForm" component={AddForm} />
-      
+            
     </MainStack.Navigator>
   );
 };
+const UserStack = createNativeStackNavigator();
+/*const User = () => {
+  return (
+    <UserStack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <UserStack.Screen name="EditProfile" component={EditProfile} />
+             
+    </UserStack.Navigator>
+  );
+};*/
 
 const Tabs = createBottomTabNavigator();
 const MainTabs = () => {
@@ -133,6 +147,6 @@ export default () => {
       {user == null && <Loading />}
       {user == false && <Auth />}
       {user == true && <Main />}
-    </NavigationContainer>
+       </NavigationContainer>
   );
 };

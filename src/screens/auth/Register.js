@@ -3,8 +3,11 @@ import {
   ScrollView,
   TouchableOpacity,
   View,
+  Modal,
   KeyboardAvoidingView,
   Image,
+  StyleSheet,
+  Pressable,
 } from "react-native";
 //import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 //import { auth } from "../../navigation/AppNavigator";
@@ -20,11 +23,11 @@ import {
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 //import  RNDateTimePicker from '@react-native-community/datetimepicker';
 //import RNPickerSelect from "react-native-picker-select";
-import DropDownPicker from 'react-native-dropdown-picker'
+//import DropDownPicker from 'react-native-dropdown-picker'
 import { auth, firestore } from "../../navigation/firebase";
 
 export default function ({ navigation }) 
-{
+{ const [modalVisible, setModalVisible] = useState(false)
   const { isDarkmode, setTheme } = useTheme();
  // const auth = getAuth();
   const [nome, setNome] = useState("");
@@ -176,20 +179,41 @@ export default function ({ navigation })
               onChangeText={(text) => setPassword(text)}
             />
               <Text style={{ marginTop: 15 }}>Gênero</Text>
-
-              <DropDownPicker
-          items={[
-              {label: 'Feminino', value: 'Feminino'},
-              {label: 'Masculino', value: 'Masculino'},
-              {label: 'Outro', value: 'Outro'},
-          ]}
-          setOpen={setOpen}
-          open={open}
-          //setvalue={setGenero}
-          value ={genero}
-          onSelectItem={(genero) => setGenero(genero)}
-      /> 
-            <Button
+              <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Escolha uma Opção</Text>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => {setGenero('Masculino'), setModalVisible(!modalVisible)}}>
+              <Text style={styles.textStyle}>Masculino</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => {setGenero('Feminino'), setModalVisible(!modalVisible)}}>
+              <Text style={styles.textStyle}>Feminino</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => {setGenero('Outro'), setModalVisible(!modalVisible)}}>
+              <Text style={styles.textStyle}>Outro</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+      <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={() => setModalVisible(true)}>
+        <Text style={styles.textStyle}>Tipo {genero}</Text>
+      </Pressable>
+              <Button
               text={loading ? "Loading" : "Create an account"}
               onPress={() => {
                 handleSignUp();
@@ -254,5 +278,50 @@ export default function ({ navigation })
         </ScrollView>
       </Layout>
     </KeyboardAvoidingView>
-  );
-}
+  );};
+  const styles = StyleSheet.create({
+    centeredView: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 22,
+    },
+    modalView: {
+      margin: 20,
+      backgroundColor: 'white',
+      borderRadius: 20,
+      padding: 35,
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+    },
+    button: {
+      borderRadius: 20,
+      padding: 10,
+      elevation: 2,
+    },
+    buttonOpen: {
+      backgroundColor: '#F194FF',
+    },
+    buttonClose: {
+      backgroundColor: '#2196F3',
+    },
+    textStyle: {
+      color: 'white',
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+    modalText: {
+      marginBottom: 15,
+      textAlign: 'center',
+    },
+  });
+
+
+
