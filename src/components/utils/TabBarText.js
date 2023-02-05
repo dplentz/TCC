@@ -6,7 +6,7 @@ export default (props) => {
     <Text
       fontWeight="bold"
       style={{
-        marginBottom: 5,
+        marginBottom: 4,
         color: props.focused
           ? isDarkmode
             ? themeColor.white100

@@ -29,11 +29,7 @@ export default function ({ navigation })
   const [nomeCampo, setNomeCampo] = useState("");
   const [valor, setValor] = useState('');
  // const [open, setOpen] = useState(false);
-  const [itens,setItens] = useState([
-    {label: "Texto", value:"text"},
-    {label: "Seleção", value:"select"},
-    {label: "Horário", value:"time"}
-  ])
+  
   const ref = firestore
     .collection("Usuario")
     .doc(auth.currentUser.uid)

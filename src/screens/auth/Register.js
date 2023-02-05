@@ -25,6 +25,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 //import RNPickerSelect from "react-native-picker-select";
 //import DropDownPicker from 'react-native-dropdown-picker'
 import { auth, firestore } from "../../navigation/firebase";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function ({ navigation }) 
 { const [modalVisible, setModalVisible] = useState(false)
@@ -133,12 +134,12 @@ export default function ({ navigation })
                 padding: 30,
               }}
             >
-              Register
+              Registro
             </Text>
-            <Text>Email</Text>
+            <Text>Email: </Text>
             <TextInput
               containerStyle={{ marginTop: 15 }}
-              placeholder="Enter your email"
+              placeholder="Insira seu email"
               value={email}
               autoCapitalize="none"
               autoCompleteType="off"
@@ -146,10 +147,10 @@ export default function ({ navigation })
               keyboardType="email-address"
               onChangeText={(text) => setEmail(text)}
             />
-            <Text style={{ marginTop: 15 }}>Nome</Text>
+            <Text style={{ marginTop: 15 }}>Nome: </Text>
             <TextInput
               containerStyle={{ marginTop: 15 }}
-              placeholder="Enter your name"
+              placeholder="Insira seu nome"
               value={nome}
               autoCapitalize="sentences"
               autoCompleteType="off"
@@ -157,20 +158,10 @@ export default function ({ navigation })
               keyboardType="default"
               onChangeText={(text) => setNome(text)}
             />
-            <Text style={{ marginTop: 15 }}>Data de aniversário</Text>
-            <Button title="Calendário" onPress={showDatePicker} />
-            <DateTimePickerModal
-                          isVisible={isDatePickerVisible}
-                          mode="date"
-                          onConfirm={handleConfirm}
-                          onCancel={hideDatePicker}
-                               />  
-                     <Text>Data: {dataString}</Text>
-
-            <Text style={{ marginTop: 15 }}>Password</Text>
+            <Text style={{ marginTop: 15 }}>Senha: </Text>
             <TextInput
               containerStyle={{ marginTop: 15 }}
-              placeholder="Enter your password"
+              placeholder="Insira sua senha"
               value={password}
               autoCapitalize="none"
               autoCompleteType="off"
@@ -178,7 +169,27 @@ export default function ({ navigation })
               secureTextEntry={true}
               onChangeText={(text) => setPassword(text)}
             />
-              <Text style={{ marginTop: 15 }}>Gênero</Text>
+            <Text style={{ marginTop: 15 }}>Data de aniversário: </Text>
+          
+            <Button title="Calendário" 
+            style={{width: 25, }}
+            text="Calendário"
+            color={"#f8bbd0"}
+            leftContent={
+              <Ionicons name="calendar" size={20} color={'white'}> </Ionicons>
+            }
+            onPress={showDatePicker} />
+            <DateTimePickerModal
+                          
+                          isVisible={isDatePickerVisible}
+                          mode="date"
+                          onConfirm={handleConfirm}
+                          onCancel={hideDatePicker}
+                               />  
+                     <Text> {dataString}</Text>
+
+            
+              <Text style={{ marginTop: 15 }}>Gênero: </Text>
               <Modal
         animationType="slide"
         transparent={true}
@@ -189,7 +200,7 @@ export default function ({ navigation })
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Escolha uma Opção</Text>
+            <Text style={styles.modalText}>Escolha uma opção: </Text>
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => {setGenero('Masculino'), setModalVisible(!modalVisible)}}>
@@ -211,10 +222,10 @@ export default function ({ navigation })
       <Pressable
         style={[styles.button, styles.buttonOpen]}
         onPress={() => setModalVisible(true)}>
-        <Text style={styles.textStyle}>Tipo {genero}</Text>
+        <Text style={styles.textStyle}>Gênero: {genero}</Text>
       </Pressable>
               <Button
-              text={loading ? "Loading" : "Create an account"}
+              text={loading ? "Loading" : "Criar conta"}
               onPress={() => {
                 handleSignUp();
               }}
@@ -233,7 +244,7 @@ export default function ({ navigation })
                 justifyContent: "center",
               }}
             >
-              <Text size="md">Already have an account?</Text>
+              <Text size="md">Já possui uma conta?</Text>
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("Login");
@@ -246,7 +257,7 @@ export default function ({ navigation })
                     marginLeft: 5,
                   }}
                 >
-                  Login here
+                  Faça seu login aqui
                 </Text>
               </TouchableOpacity>
             </View>
@@ -270,7 +281,7 @@ export default function ({ navigation })
                     marginLeft: 5,
                   }}
                 >
-                  {isDarkmode ? "☀️ light theme" : "🌑 dark theme"}
+                  {isDarkmode ? "☀️ Tema claro" : "🌑 Tema escuro"}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -302,15 +313,16 @@ export default function ({ navigation })
       elevation: 5,
     },
     button: {
-      borderRadius: 20,
+      borderRadius: 10,
+      marginTop: 10,
       padding: 10,
       elevation: 2,
     },
     buttonOpen: {
-      backgroundColor: '#F194FF',
+      backgroundColor: '#f8bbd0',
     },
     buttonClose: {
-      backgroundColor: '#2196F3',
+      backgroundColor: '#f8bbd0',
     },
     textStyle: {
       color: 'white',
@@ -319,6 +331,7 @@ export default function ({ navigation })
     },
     modalText: {
       marginBottom: 15,
+      color:"black",
       textAlign: 'center',
     },
   });

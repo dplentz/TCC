@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   ActivityIndicator,
   SafeAreaView,
@@ -14,13 +14,14 @@ import {
   ScrollView
 } from "react-native";
 import  { Button, Layout, Section, SectionContent, TextInput} from "react-native-rapi-ui";
+import {Modalize} from 'react-native-modalize';
 //import DatePicker from 'react-native-datepicker';
 import { auth, firestore } from "../../navigation/firebase";
 //import MeuEstilo from "./meuestilo";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const AddForm = (props) => 
-{
+{ const modalizeRef = useRef(null)
   const [modalVisible, setModalVisible] = useState(false)
   const [forms, setForms] = useState([]); // Initial empty array of users
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
@@ -34,25 +35,72 @@ const AddForm = (props) =>
   const [bool, setBool] = useState("");
   let varauxiliar='';
   const [valor, setValor] = useState("");
+  const [modalVisible2, setModalVisible2] = useState(false)
+  const [nomeCampo, setNomeCampo] = useState("");
+  const [valorcampo, setValorcampo] = useState('');
+ // const [open, setOpen] = useState(false);
+  
+  const refCampo = firestore
+    .collection("Usuario")
+    .doc(auth.currentUser.uid)
+    .collection("Form")
+    .doc(auth.currentUser.uid).collection("Campos").doc();
+
+  const abrirModalize =() =>{
+     modalizeRef.current?.open();
+  }
+   
+
+  const enviarCampos = () => {
+    refCampo
+      .set({
+        nomeCampo: nomeCampo,
+        valor: valor,
+        id: ref.id,
+      })
+      .then(() => {
+        alert("Campo " + nomeCampo + " Adicionado com Sucesso");
+        handleChange(nomeCampo);
+      });
+  };
+
+
     const ref = firestore
     .collection("Usuario")
     .doc(auth.currentUser.uid)
     .collection("Form").doc(auth.currentUser.uid).collection("Dados")
     .doc();
 
-    const handleConfirm = (date) => {
-      console.warn("A data foi selecionada: "+ date);
-      const formattedDate=date.getDate().toString().padStart(2, "0") + "/" + ((date.getMonth()+1).toString().padStart(2, "0"))  + "/" + date.getFullYear();
-      console.log(formattedDate)
-      setDataString(formattedDate)
-      setDataNasc(date)
-      hideDatePicker();
-    };
-  
-    const hideDatePicker = () => {
-      setDatePickerVisibility(false);
-    };
-    useEffect(() => {
+    const handleChange = (e) =>{
+        e.persist();
+        useEffect(() => {
+          const subscriber = firestore
+            .collection("Usuario")
+            .doc(auth.currentUser.uid)
+            .collection("Form").doc(auth.currentUser.uid).collection("Campos")
+            .onSnapshot((querySnapshot) => {
+              const forms = [];
+              querySnapshot.forEach((documentSnapshot) => {
+                forms.push({
+                  ...documentSnapshot.data(),
+                  key: documentSnapshot.id,
+                });
+              });
+              setForms(forms);
+            //  listaCampos = forms.nomeCampo
+              lista=forms
+              setLoading(false);
+            });
+          // Unsubscribe from events when no longer in use
+          return () => subscriber();
+        }, []);
+      
+        if (loading) {
+          return <ActivityIndicator />;
+        }
+      
+    }
+      useEffect(() => {
       const subscriber = firestore
         .collection("Usuario")
         .doc(auth.currentUser.uid)
@@ -99,29 +147,13 @@ const AddForm = (props) =>
 
 
 
-//const criarForm = () => {
-  const Item = ({ nomeCampo }) => (
-    <View //style={MeuEstilo.item}
-    >
-      <Text //style={MeuEstilo.title}
-      >{nomeCampo}</Text>
-    </View>
-  );
-
-  const renderItem = ({ item }) => <Item nomeCampo={item.nomeCampo} />;
-
-  /*const exemplo =()=>{
-    listaCampos = lista.map(campoInfo => (
-      <TextInput placeholder={campoInfo.nomeCampo} value={Text}></TextInput>
-    ))
-  }*/
- 
   return (
+   
     <Layout>
-                
+            
           <View
             style={{
-              flex: 1,
+              flex: 0.5,
               justifyContent: "center",
               alignItems: "center",
             }}
@@ -129,10 +161,10 @@ const AddForm = (props) =>
             <Image
               resizeMode="contain"
               style={{
-                height: 220,
-                width: 220,
+                height: 300,
+                width: 300,
               }}
-              source={require("../../../assets/register.png")}
+              source={require("../../../assets/login.png")}
             />
           </View>
     <View
@@ -143,7 +175,7 @@ const AddForm = (props) =>
         marginHorizontal: 10,
       }}
     >
-      <Section style={ {width: 300}}>
+      <Section style={ {width: "90%", height:"100%"}}>
         <SectionContent>
         <Modal
         animationType="slide"
@@ -157,18 +189,19 @@ const AddForm = (props) =>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>Escolha uma Opção</Text>
             <Pressable
-              style={[styles.button, styles.buttonClose]}
+              style={[styles.buttonModal, styles.buttonModalOpen]}
               onPress={() => {setBool('Sim'), setModalVisible(!modalVisible)}}>
               <Text style={styles.textStyle}>Sim</Text>
             </Pressable>
             <Pressable
-              style={[styles.button, styles.buttonClose]}
+              style={[styles.buttonModal, styles.buttonModalOpen]}
               onPress={() => {setBool('Não'), setModalVisible(!modalVisible)}}>
               <Text style={styles.textStyle}>Não</Text>
             </Pressable>
           </View>
         </View>
       </Modal>
+      <ScrollView>
     <SafeAreaView //style={MeuEstilo.containerlistar}
     >
 {listaCampos = lista.map(campoInfo => {
@@ -189,7 +222,7 @@ const AddForm = (props) =>
                         <Pressable
                          style={[styles.button, styles.buttonOpen]}
                          onPress={() => setModalVisible(true)}>
-                        <Text style={styles.textStyle}>{campoInfo.nomeCampo} {bool}</Text>
+                        <Text style={styles.textStyle}>{campoInfo.nomeCampo}: {bool}</Text>
                          </Pressable>   
                                                            
                               )
@@ -272,6 +305,17 @@ const AddForm = (props) =>
       )
      )
         */}
+          <Button
+              text="Adicionar Campo"
+              onPress={() => {
+                abrirModalize();
+              }}
+              color= {'#0bbc9f'}
+              style={{
+                marginTop: 10,
+                backgroundColor: "#0bbc9f",
+              }}
+            />
         
         <Button
               text="Enviar Formulário"
@@ -284,12 +328,120 @@ const AddForm = (props) =>
                 backgroundColor: "#0bbc9f",
               }}
             />
-
   </SafeAreaView>
+  </ScrollView>
   </SectionContent>
         </Section>
       </View>
+      
+      <Modalize ref={modalizeRef} snapPoint={500}>
+      <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+          }}
+        >
+          
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Image
+              resizeMode="contain"
+              style={{
+                height: 220,
+                width: 220,
+              }}
+              source={require("../../../assets/register.png")}
+            />
+          </View>
+        <Section  style={{ marginHorizontal: 20, width: '90%'}} ><SectionContent>
+          <View
+            style={{
+              flex: 3,
+              paddingHorizontal: 20,
+              paddingBottom: 20,
+            }}
+          >
+          
+        <TextInput
+          placeholder="Nome do Campo"
+          value={nomeCampo}
+          onChangeText={(text) => setNomeCampo(text)}
+          //style={MeuEstilo.input}
+        />
+         <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible2}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible2);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Escolha uma Opção</Text>
+            <Pressable
+              style={[styles.buttonModal, styles.buttonModalOpen]}
+              onPress={() => {setValorcampo('String'), setModalVisible2(!modalVisible2)}}>
+              <Text style={styles.textStyle}>String</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.buttonModal, styles.buttonModalOpen]}
+              onPress={() => {setValorcampo('Date'), setModalVisible2(!modalVisible2)}}>
+              <Text style={styles.textStyle}>Date</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.buttonModal, styles.buttonModalOpen]}
+              onPress={() => {setValorcampo('Boolean'), setModalVisible2(!modalVisible2)}}>
+              <Text style={styles.textStyle}>Boolean</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+      <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={() => setModalVisible2(true)}>
+        <Text style={styles.textStyle}>Tipo {valorcampo}</Text>
+      </Pressable>
+     </View>
+     </SectionContent></Section>
+      </ScrollView>
+      <View>
+    
+          
+       
+         
+      
+     </View>
+      <ScrollView>
+      <View style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginTop: 15,
+                justifyContent: "center",
+              }}
+              >
+         <Button
+              text="Criar Formulário"
+              onPress={() => {
+                enviarCampos();
+              }}
+              color={"#0bbc9f"}
+              style={{
+                marginTop: 10,
+                color: "#0bbc9f",
+              }}
+            />
+        
+      </View>
+      </ScrollView>
+</Modalize>
     </Layout>
+
+    
   );
   //{listaCampos.value==="Hora" ?<Text>Aqui iria o TextInput {lista.length}</Text>:<Text>Este é o resultado {lista.length}</Text>}
 
@@ -316,21 +468,40 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  buttonModal:{
+     color: "#0bbc9f",
+     height:48,
+     borderColor: 'black',
+     borderRadius: 5,
+     marginTop: 10,
+     marginVertical: 10,
+     padding: 10,
+     elevation: 1,
+  },
+  buttonModalOpen:{
+    backgroundColor: '#f8bbd0',
+    borderColor: 'black',
+  },
   button: {
-    color: "#0bbc9f",
+    //color: "#0bbc9f",
+    height:48,
+    borderColor: 'black',
     borderRadius: 5,
     marginTop: 10,
+    marginVertical: 10,
     padding: 10,
-    elevation: 2,
+    elevation: 1,
   },
   buttonOpen: {
-    backgroundColor: '#f8bbd0',
+    //backgroundColor: '#f8bbd0',
+    borderColor: 'black',
   },
   buttonClose: {
     backgroundColor: '#2196F3',
+    borderColor: 'black',
   },
   textStyle: {
-    color: 'white',
+    color: 'grey',
     fontWeight: 'bold',
     textAlign: 'center',
   },

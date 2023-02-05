@@ -56,8 +56,8 @@ export default function ({ navigation }) {
             <Image
               resizeMode="contain"
               style={{
-                height: 220,
-                width: 220,
+                height: 300,
+                width: 300,
               }}
               source={require("../../../assets/login.png")}
             />

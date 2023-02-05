@@ -7,8 +7,8 @@ export default (props) => {
   return (
     <Ionicons
       name={props.icon}
-      style={{ marginBottom: -7 }}
-      size={24}
+      style={{ marginBottom: -7, alignContent: "center" }}
+      size={25}
       color={
         props.focused
           ? isDarkmode

@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {useNavigation} from "@react-navigation/core";
-import { ActivityIndicator,View,  StyleSheet, Image, Pressable, AlertButton, Alert} from "react-native";
+import { ActivityIndicator,View,  StyleSheet, Image, Pressable, AlertButton, Alert, KeyboardAvoidingView} from "react-native";
 import { storage, auth, firestore } from "../navigation/firebase";
 import { getStorage, uploadBytes } from "firebase/storage"; //access the storage databaSse
 import * as ImagePicker from "expo-image-picker";
+import { Modalize } from "react-native-modalize";
 import { Usuario } from "../../model/Usuario";
+import { getAuth, signOut } from "firebase/auth";
 import {
   Layout,
   Button,
@@ -17,13 +19,12 @@ import {
 } from "react-native-rapi-ui";
 
 export default function ({ navigation}) {
- 
-  //const navigation =useNavigation();
-  // The path of the picked image
+  const { isDarkmode, setTheme } = useTheme();
+  const auth = getAuth();
   const [pickedImagePath, setPickedImagePath] = useState("");
+  const modalizeRef = useRef(null)
   const [usuario, setUsuario] = useState<Partial<Usuario>>({})
-  // const [usuarios, setUsuarios] = useState<Partial<Usuario>[]>([{}])
-  const [loading, setLoading] = useState(true);
+   const [loading, setLoading] = useState(true);
 
     
     useEffect(() => {
@@ -44,6 +45,17 @@ export default function ({ navigation}) {
 
   if (loading) {
     return <ActivityIndicator />;
+  }
+
+  const deletarUsuario = () =>{
+    var user = auth.currentUser;
+    user.delete().then(function() {
+      navigation.navigate("Login"); 
+  // User deleted.
+}).catch(function(error) {
+  // An error happened.
+});
+   
   }
 
 
@@ -145,8 +157,14 @@ export default function ({ navigation}) {
     }
   };
 
+  const abrirModalize =() =>{
+    modalizeRef.current?.open();
+ }
+
 
   return (
+    <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
+      <Layout>
     <View style={styles.screen}>
       <View style={styles.buttonContainer}>
       </View>
@@ -164,27 +182,82 @@ export default function ({ navigation}) {
      
      
 
-<Section><SectionContent> 
+<Section style={{width: '90%', height:'65%', }}><SectionContent> 
        <Text style={styles.itens}>Nome: {usuario.nome}</Text>
        <Text style={styles.itens}>E-mail: {usuario.email}</Text>
-       <Text style={styles.itens}>Genero: {usuario.genero}</Text>
+       <Text style={styles.itens}>Gênero: {usuario.genero}</Text>
        <Text style={styles.itens}>Data de nascimento: {usuario.dataString}</Text>
        
        <Button text="Escolher a foto" onPress={escolhefoto}  
       color={"#0bbc9f"}
        style={{ marginTop: 10, height: 45}}
       />
-     <Button text="Alterar dados do perfil" onPress={() => {
-      navigation.navigate("EditProfile");
+    
+       <Button text="Configurações" onPress={() => {
+       abrirModalize();
      }}  
       color={"#0bbc9f"}
       style={{ marginTop: 15, marginVertical: 5, height: 45}}
       />
       </SectionContent>
       </Section>
+    
+      <Modalize ref={modalizeRef} snapPoint={300}>
        
-      
+          <Section>
+            <SectionContent>
+                        
+         <Button
+              text={isDarkmode ? "Modo Claro" : "Modo Escuro"}
+              status={isDarkmode ? "success" : "warning"}
+              onPress={() => {
+                if (isDarkmode) {
+                  setTheme("light");
+                } else {
+                  setTheme("dark");
+                }
+              }}
+              color={"#f8bbd0"}
+              style={{
+                marginTop: 10,
+              }}
+            />
+             <Button text="Alterar dados do perfil" onPress={() => {
+              navigation.navigate("EditProfile");
+              }}  
+              color={"#f8bbd0"}
+              style={{ marginTop: 15, marginVertical: 5, height: 45}}
+                />
+            <Button
+              text="Sair"
+              onPress={() => {
+                signOut(auth);
+              }}
+              color={"#f8bbd0"}
+              style={{
+                marginTop: 10,
+                backgroundColor: "#f8bbd0",
+              }}
+            />
+              <Button
+              status="danger"
+              text="Excluir conta"
+              onPress={() => {
+                deletarUsuario();
+              }}
+              color={"#c48b9f"}
+              style={{
+                marginTop: 10,
+                backgroundColor: "#0bbc7d",
+              }}
+            />
+            </SectionContent></Section>
+       
+        
+        </Modalize>   
     </View>
+    </Layout>
+    </KeyboardAvoidingView>
     
   );
 }
@@ -202,20 +275,20 @@ const styles = StyleSheet.create({
     marginTop: 10, padding:15, 
     textAlign: 'center',
     backgroundColor: "#9fffe0",
-    width: 300, height: 50, alignItems: "center" ,
+    width: "100%", height: 50, alignItems: "center" ,
     marginVertical: 10,
     borderRadius: 5,
     opacity: 0.7,
-    
+       
   },
   image: {
-    width: 200,
-    height: 200,
-    borderRadius: 200 / 2,
+    width: 220,
+    height: 220,
+    borderRadius: 220 / 2,
     resizeMode: "cover",
   },
   buttonContainer: {
-    width: 300,
+    width: "25%",
     flexDirection: "row",
     justifyContent: "space-around",
   },
