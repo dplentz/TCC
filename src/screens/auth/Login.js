@@ -124,7 +124,7 @@ export default function ({ navigation }) {
                 justifyContent: "center",
               }}
             >
-              <Text size="md">Don't have an account?</Text>
+              <Text size="md">Não possui uma conta?</Text>
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("Register");
@@ -137,7 +137,7 @@ export default function ({ navigation }) {
                     marginLeft: 5,
                   }}
                 >
-                  Register here
+                  Registre-se aqui
                 </Text>
               </TouchableOpacity>
             </View>
@@ -155,7 +155,7 @@ export default function ({ navigation }) {
                 }}
               >
                 <Text size="md" fontWeight="bold">
-                  Forget password
+                  Esqueci a senha
                 </Text>
               </TouchableOpacity>
             </View>
@@ -179,7 +179,7 @@ export default function ({ navigation }) {
                     marginLeft: 5,
                   }}
                 >
-                  {isDarkmode ? "☀️ light theme" : "🌑 dark theme"}
+                  {isDarkmode ? "☀️ Tema claro" : "🌑 Tema escuro"}
                 </Text>
               </TouchableOpacity>
             </View>

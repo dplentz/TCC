@@ -117,17 +117,17 @@ export default function ({ navigation })
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => {setValor('String'), setModalVisible(!modalVisible)}}>
-              <Text style={styles.textStyle}>String</Text>
+              <Text style={styles.textStyle}>Botão de texto</Text>
             </Pressable>
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => {setValor('Date'), setModalVisible(!modalVisible)}}>
-              <Text style={styles.textStyle}>Date</Text>
+              <Text style={styles.textStyle}>Botão de horário</Text>
             </Pressable>
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => {setValor('Boolean'), setModalVisible(!modalVisible)}}>
-              <Text style={styles.textStyle}>Boolean</Text>
+              <Text style={styles.textStyle}>Botão sim/não</Text>
             </Pressable>
           </View>
         </View>

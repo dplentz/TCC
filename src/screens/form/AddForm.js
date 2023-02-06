@@ -386,17 +386,17 @@ const AddForm = (props) =>
             <Pressable
               style={[styles.buttonModal, styles.buttonModalOpen]}
               onPress={() => {setValorcampo('String'), setModalVisible2(!modalVisible2)}}>
-              <Text style={styles.textStyle}>String</Text>
+              <Text style={styles.textStyle}>Botão de texto</Text>
             </Pressable>
             <Pressable
               style={[styles.buttonModal, styles.buttonModalOpen]}
               onPress={() => {setValorcampo('Date'), setModalVisible2(!modalVisible2)}}>
-              <Text style={styles.textStyle}>Date</Text>
+              <Text style={styles.textStyle}>Botão de hora</Text>
             </Pressable>
             <Pressable
               style={[styles.buttonModal, styles.buttonModalOpen]}
               onPress={() => {setValorcampo('Boolean'), setModalVisible2(!modalVisible2)}}>
-              <Text style={styles.textStyle}>Boolean</Text>
+              <Text style={styles.textStyle}>Botão sim/não</Text>
             </Pressable>
           </View>
         </View>

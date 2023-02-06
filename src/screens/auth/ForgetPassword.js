@@ -29,7 +29,7 @@ export default function ({ navigation })
       .then(function () {
         setLoading(false);
         navigation.navigate("Login");
-        alert("Your password reset has been sent to your email");
+        alert("Sua senha foi enviada para o seu email");
       })
       .catch(function (error) {
         setLoading(false);
@@ -77,12 +77,12 @@ export default function ({ navigation })
                 padding: 30,
               }}
             >
-              Forget Password
+              Esqueci a senha
             </Text>
             <Text>Email</Text>
             <TextInput
               containerStyle={{ marginTop: 15 }}
-              placeholder="Enter your email"
+              placeholder="Insira seu email"
               value={email}
               autoCapitalize="none"
               autoCompleteType="off"
@@ -91,7 +91,8 @@ export default function ({ navigation })
               onChangeText={(text) => setEmail(text)}
             />
             <Button
-              text={loading ? "Loading" : "Send email"}
+              text={loading ? "Loading" : "Enviar"}
+              color={"#f8bbd0"}
               onPress={() => {
                 forget();
               }}
@@ -109,7 +110,7 @@ export default function ({ navigation })
                 justifyContent: "center",
               }}
             >
-              <Text size="md">Already have an account?</Text>
+              <Text size="md">Já possui uma conta?</Text>
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("Login");
@@ -122,7 +123,7 @@ export default function ({ navigation })
                     marginLeft: 5,
                   }}
                 >
-                  Login here
+                  Faça seu Login aqui
                 </Text>
               </TouchableOpacity>
             </View>
@@ -146,7 +147,7 @@ export default function ({ navigation })
                     marginLeft: 5,
                   }}
                 >
-                  {isDarkmode ? "☀️ light theme" : "🌑 dark theme"}
+                  {isDarkmode ? "☀️ Tema claro" : "🌑 Tema escuro"}
                 </Text>
               </TouchableOpacity>
             </View>
