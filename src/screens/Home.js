@@ -73,25 +73,17 @@ export default function ({ navigation }) {
     <Layout>
       <View
         style={{
-          flex: 1,
-          alignItems: "center",
+          flex:1,
+          padding:20,
           justifyContent: "center",
-          marginHorizontal: 20,
         }}
       >
         <Section>
-          <SectionContent>
-            <Text fontWeight="bold" style={{ textAlign: "center" }}>
-              These UI components provided by Rapi UI
-            </Text>
-            <Button
-              style={{ marginTop: 10 }}
-              text="Rapi UI Documentation"
-              status="info"
-              onPress={() => Linking.openURL("https://rapi-ui.kikiding.space/")}
-            />
-            <Button
-              text="Criar Formulário"
+          <SectionContent style={{width:"100%", height:"95%",}}>
+            
+              <Button
+              text="Adicionar campos"
+              color="#f8bbd0"
               onPress={() => {
                 navigation.navigate("CreateForm");
               }}
@@ -101,7 +93,8 @@ export default function ({ navigation }) {
               }}
             />
               <Button
-              text="Add Formulário"
+              text="Adicionar dados"
+              color="#f8bbd0"
               onPress={() => {
                 navigation.navigate("AddForm");
               }}
@@ -111,30 +104,18 @@ export default function ({ navigation }) {
               }}
             />
             <Button
-              status="danger"
-              text="Logout"
+              text="Gerar PDF do diario"
+              color="#f8bbd0"
               onPress={() => {
-                signOut(auth);
+                navigation.navigate("AddForm");
               }}
               style={{
                 marginTop: 10,
                 backgroundColor: "#0bbc7d",
               }}
             />
-            <Button
-              text={isDarkmode ? "Light Mode" : "Dark Mode"}
-              status={isDarkmode ? "success" : "warning"}
-              onPress={() => {
-                if (isDarkmode) {
-                  setTheme("light");
-                } else {
-                  setTheme("dark");
-                }
-              }}
-              style={{
-                marginTop: 10,
-              }}
-            />
+            
+          
           </SectionContent>
         </Section>
       </View>

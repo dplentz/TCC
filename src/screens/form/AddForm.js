@@ -9,47 +9,88 @@ import {
   Text,
   StatusBar,
   Image,
+  KeyboardAvoidingView,
   Modal,
   StyleSheet,
   ScrollView
 } from "react-native";
-import  { Button, Layout, Section, SectionContent, TextInput} from "react-native-rapi-ui";
+import { Ionicons } from "@expo/vector-icons";
+import  { Button, Layout, Section, SectionContent, TextInput,useTheme, themeColor,TopNav,} from "react-native-rapi-ui";
 import {Modalize} from 'react-native-modalize';
-//import DatePicker from 'react-native-datepicker';
 import { auth, firestore } from "../../navigation/firebase";
 //import MeuEstilo from "./meuestilo";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
-const AddForm = (props) => 
+export default function (navigation)  
 { const modalizeRef = useRef(null)
+  const { isDarkmode, setTheme } = useTheme();
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [modalVisible, setModalVisible] = useState(false)
+  const [modalVisible2, setModalVisible2] = useState(false)
+  const [bool, setBool] = useState("");
+  const [date, setDate] = useState(""); 
+   
+
   const [forms, setForms] = useState([]); // Initial empty array of users
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
   let lista=forms
-  let listaCampos="";
-  let valorDado= "";
+ 
+
+   
+  //const [nomeCampo, setNomeCampo] = useState("");
   const listaDados= useState([]);
   const i = useState[1];
-  //const [nomeCampo, setNomeCampo] = useState("");
   const [dados, setDados] = useState([]);
-  const [bool, setBool] = useState("");
-  let varauxiliar='';
   const [valor, setValor] = useState("");
-  const [modalVisible2, setModalVisible2] = useState(false)
   const [nomeCampo, setNomeCampo] = useState("");
   const [valorcampo, setValorcampo] = useState('');
+  let valorDado= "";
+  let listaCampos="";
  // const [open, setOpen] = useState(false);
+
+
+
+
+
+
+
+ const showDatePicker = () => {
+  setDatePickerVisibility(true);
+};
+
+const handleConfirm = (date) => {
+  console.warn("A data foi selecionada: "+ date);
+  const formattedDate=date.getDate().toString().padStart(2, "0") + "/" + ((date.getMonth()+1).toString().padStart(2, "0"))  + "/" + date.getFullYear();
+  console.log(formattedDate)
+  setDate(formattedDate)
+  //setDate(date)
+  hideDatePicker();
+};
+
+const hideDatePicker = () => {
+  setDatePickerVisibility(false);
+};
+
+const abrirModalize =() =>{
+  modalizeRef.current?.open();
+}
+
+const reload=()=>window.location.reload();
+
+
+
   
+
+
+
+
   const refCampo = firestore
     .collection("Usuario")
     .doc(auth.currentUser.uid)
     .collection("Form")
     .doc(auth.currentUser.uid).collection("Campos").doc();
 
-  const abrirModalize =() =>{
-     modalizeRef.current?.open();
-  }
-   
+     
 
   const enviarCampos = () => {
     refCampo
@@ -64,43 +105,8 @@ const AddForm = (props) =>
       });
   };
 
-
-    const ref = firestore
-    .collection("Usuario")
-    .doc(auth.currentUser.uid)
-    .collection("Form").doc(auth.currentUser.uid).collection("Dados")
-    .doc();
-
-    const handleChange = (e) =>{
-        e.persist();
-        useEffect(() => {
-          const subscriber = firestore
-            .collection("Usuario")
-            .doc(auth.currentUser.uid)
-            .collection("Form").doc(auth.currentUser.uid).collection("Campos")
-            .onSnapshot((querySnapshot) => {
-              const forms = [];
-              querySnapshot.forEach((documentSnapshot) => {
-                forms.push({
-                  ...documentSnapshot.data(),
-                  key: documentSnapshot.id,
-                });
-              });
-              setForms(forms);
-            //  listaCampos = forms.nomeCampo
-              lista=forms
-              setLoading(false);
-            });
-          // Unsubscribe from events when no longer in use
-          return () => subscriber();
-        }, []);
-      
-        if (loading) {
-          return <ActivityIndicator />;
-        }
-      
-    }
-      useEffect(() => {
+  
+    useEffect(() => {
       const subscriber = firestore
         .collection("Usuario")
         .doc(auth.currentUser.uid)
@@ -125,7 +131,18 @@ const AddForm = (props) =>
     if (loading) {
       return <ActivityIndicator />;
     }
-  
+
+
+
+
+
+
+
+    const ref = firestore
+    .collection("Usuario")
+    .doc(auth.currentUser.uid)
+    .collection("Form").doc(auth.currentUser.uid).collection("Dados")
+    .doc();
     
     const enviarDadosO = () => {
     ref.onSnapshot((querySnapshot) => {
@@ -147,10 +164,25 @@ const AddForm = (props) =>
 
 
 
+
+
+
+
+
   return (
    
     <Layout>
-            
+               <TopNav
+        middleContent="Preencher diário"
+        leftContent={
+          <Ionicons
+            name="chevron-back"
+            size={20}
+            color={isDarkmode ? themeColor.white100 : themeColor.black}
+          />
+        }
+        leftAction={() => navigation.goBack()}
+      /> 
           <View
             style={{
               flex: 0.5,
@@ -158,15 +190,22 @@ const AddForm = (props) =>
               alignItems: "center",
             }}
           >
+         
             <Image
               resizeMode="contain"
               style={{
-                height: 300,
-                width: 300,
+                height: 250,
+                width: 250,
               }}
               source={require("../../../assets/login.png")}
             />
           </View>
+
+
+
+
+
+
     <View
       style={{
         flex: 1,
@@ -175,6 +214,7 @@ const AddForm = (props) =>
         marginHorizontal: 10,
       }}
     >
+      
       <Section style={ {width: "90%", height:"100%"}}>
         <SectionContent>
         <Modal
@@ -204,6 +244,25 @@ const AddForm = (props) =>
       <ScrollView>
     <SafeAreaView //style={MeuEstilo.containerlistar}
     >
+  <Text style={{ marginTop: 15 }}>Data do registro: </Text>
+          
+          <Button title="Calendário" 
+          style={{width: 25, }}
+          text="Calendário"
+          color={"#f8bbd0"}
+          leftContent={
+            <Ionicons name="calendar" size={20} color={'white'}> </Ionicons>
+          }
+          onPress={showDatePicker} />
+          <DateTimePickerModal
+                        
+                        isVisible={isDatePickerVisible}
+                        mode="date"
+                        onConfirm={handleConfirm}
+                        onCancel={hideDatePicker}
+                             />  
+                   <Text> {date}</Text>
+        
 {listaCampos = lista.map(campoInfo => {
                      <Text>num {campoInfo.uid} </Text>
                                 switch (campoInfo.valor) {
@@ -258,53 +317,6 @@ const AddForm = (props) =>
                       })
                     }
                     
-
-   {/* 
-      FUNCIONAVA A IMPRESSÃO NA VIEW    
-   (      <TextInput placeholder={campoInfo.nomeCampo} value={nomeCampo}
-      onChangeText={(text) => setNomeCampo(text)}></TextInput>
-      
-    ))}}
-
-
-
-
-
-   {/* listaCampos = lista.map(campoInfo => (
-         if(campoInfo.valueCampo == "text") {
-          <TextInput placeholder={campoInfo.nomeCampo} value={Text} onChangeText={(text) => setDados(text)}></TextInput>    
-         }
-         else if(campoInfo.valueCampo == "date")
-          {
-           <DatePicker
-           value={dataNasc}
-           selected={dataNasc}
-           onChange={(date) => setDataNasc(date)}
-                  customStyles={{
-                    dateInput: {
-                      borderWidth: 0,
-                      alignItems: 'flex-start'
-                    },
-                    dateText: {
-                      color: '#C0C0C0',
-                    }
-                  }}
-                />  
-         } else{
-          <RNPickerSelect
-                 value={dados}
-                 onValueChange={(dados) => setDados(dados)}
-                 items={[
-                     { label: "Feminino", value: "Feminino" },
-                     { label: "Masculino", value: "Masculino" },
-                     { label: "Não binário", value: "N/B" },
-                 ]}
-                 style={{ inputAndroid: { color: "black" } }} useNativeAndroidPickerStyle={false}
-             />
-         }  
-      )
-     )
-        */}
           <Button
               text="Adicionar Campo"
               onPress={() => {
@@ -334,7 +346,16 @@ const AddForm = (props) =>
         </Section>
       </View>
       
-      <Modalize ref={modalizeRef} snapPoint={500}>
+
+
+
+
+
+
+
+
+      <Modalize ref={modalizeRef} onClosed={reload} >
+        <KeyboardAvoidingView>
       <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
@@ -357,6 +378,13 @@ const AddForm = (props) =>
               source={require("../../../assets/register.png")}
             />
           </View>
+
+
+
+
+
+
+
         <Section  style={{ marginHorizontal: 20, width: '90%'}} ><SectionContent>
           <View
             style={{
@@ -408,15 +436,7 @@ const AddForm = (props) =>
       </Pressable>
      </View>
      </SectionContent></Section>
-      </ScrollView>
-      <View>
-    
-          
-       
-         
-      
-     </View>
-      <ScrollView>
+     
       <View style={{
                 flexDirection: "row",
                 alignItems: "center",
@@ -438,14 +458,26 @@ const AddForm = (props) =>
         
       </View>
       </ScrollView>
+      </KeyboardAvoidingView>
 </Modalize>
     </Layout>
 
     
   );
   //{listaCampos.value==="Hora" ?<Text>Aqui iria o TextInput {lista.length}</Text>:<Text>Este é o resultado {lista.length}</Text>}
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
@@ -510,4 +542,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-export default AddForm;
+//export default AddForm;

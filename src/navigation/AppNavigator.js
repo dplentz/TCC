@@ -11,7 +11,8 @@ import TabBarText from "../components/utils/TabBarText";
 import Home from "../screens/Home";
 import SecondScreen from "../screens/SecondScreen";
 import About from "../screens/About";
-import Profile from "../screens/Profile.tsx";
+import Profile from "../screens/Profile";
+//import Profile from "../screens/Profile.tsx";
 import Loading from "../screens/utils/Loading";
 //import EditProfile from "../screen/EditProfile";
 // Auth screens
@@ -20,6 +21,7 @@ import Register from "../screens/auth/Register";
 import ForgetPassword from "../screens/auth/ForgetPassword";
 import CreateForm from "../screens/form/CreateForm";
 import AddForm from "../screens/form/AddForm";
+import EditProfile from "../screens/EditProfile";
 import { AuthContext } from "../provider/AuthProvider";
 
 //import firebase from "firebase/compat/app";
@@ -64,26 +66,15 @@ const Main = () => {
       }}
     >
       <MainStack.Screen name="MainTabs" component={MainTabs} />
+      <MainStack.Screen name="AddForm" component={AddForm} />
       <MainStack.Screen name="SecondScreen" component={SecondScreen} />
       <MainStack.Screen name="CreateForm" component={CreateForm} />
-      <MainStack.Screen name="AddForm" component={AddForm} />
+      <MainStack.Screen name="EditProfile" component={EditProfile} />
             
     </MainStack.Navigator>
   );
 };
-const UserStack = createNativeStackNavigator();
-/*const User = () => {
-  return (
-    <UserStack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <UserStack.Screen name="EditProfile" component={EditProfile} />
-             
-    </UserStack.Navigator>
-  );
-};*/
+
 
 const Tabs = createBottomTabNavigator();
 const MainTabs = () => {
@@ -146,7 +137,8 @@ export default () => {
     <NavigationContainer>
       {user == null && <Loading />}
       {user == false && <Auth />}
-      {user == true && <Main />}
+      {user == true && <Main />} 
+      
        </NavigationContainer>
   );
 };

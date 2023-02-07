@@ -156,7 +156,7 @@ export default function ({ navigation })
               }}
               >
          <Button
-              text="Criar Formulário"
+              text="Adicionar campo"
               onPress={() => {
                 enviarDados();
               }}
