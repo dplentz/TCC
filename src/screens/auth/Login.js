@@ -20,7 +20,7 @@ export default function ({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
   const auth = getAuth();
   const [email, setEmail] = useState("dudaplentz18@gmail.com");
-  const [password, setPassword] = useState("deskjet12");
+  const [password, setPassword] = useState("deskjet");
   const [loading, setLoading] = useState(false);
 
   async function login() {

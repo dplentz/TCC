@@ -49,7 +49,15 @@ export default function ({ navigation}) {
 
   const deletarUsuario = () =>{
     var user = auth.currentUser;
+    var userDel = firestore
+    .collection('Usuario')
+    .doc(auth.currentUser.uid);
     user.delete().then(function() {
+      navigation.navigate("Login"); 
+  // User deleted.
+})
+   // user?.delete
+    userDel.delete().then(function() {
       navigation.navigate("Login"); 
   // User deleted.
 }).catch(function(error) {

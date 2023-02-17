@@ -5,14 +5,14 @@ import {
   View,
   Pressable,
   FlatList,
-  MeuEstiloheet,
   Text,
   StatusBar,
   Image,
   KeyboardAvoidingView,
   Modal,
   StyleSheet,
-  ScrollView
+  ScrollView,
+  
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import  { Button, Layout, Section, SectionContent, TextInput,useTheme, themeColor,TopNav,} from "react-native-rapi-ui";
@@ -20,14 +20,12 @@ import {Modalize} from 'react-native-modalize';
 import { auth, firestore } from "../../navigation/firebase";
 //import MeuEstilo from "./meuestilo";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-export default function (navigation)  
-{ const modalizeRef = useRef(null)
-  const { isDarkmode, setTheme } = useTheme();
+export default function ({navigation})  
+{ const { isDarkmode, setTheme } = useTheme();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [modalVisible, setModalVisible] = useState(false)
-  const [modalVisible2, setModalVisible2] = useState(false)
-  const [bool, setBool] = useState("");
   const [date, setDate] = useState(""); 
    
 
@@ -38,14 +36,21 @@ export default function (navigation)
 
    
   //const [nomeCampo, setNomeCampo] = useState("");
-  const listaDados= useState([]);
-  const i = useState[1];
-  const [dados, setDados] = useState([]);
-  const [valor, setValor] = useState("");
-  const [nomeCampo, setNomeCampo] = useState("");
-  const [valorcampo, setValorcampo] = useState('');
-  let valorDado= "";
-  let listaCampos="";
+  let listaCampos = []
+  let i = 0;
+  let arrayValorDigitado=[]
+  let arrayNomeCampo = [];
+  //const i = useState[1];
+  const [bool,setBool] = useState('');
+  var obj = []
+ 
+const setValores=(valorDigitado: string, nomeCampo: any, posicao: number)=>
+{ arrayNomeCampo[posicao]=nomeCampo;
+  arrayValorDigitado[posicao]=valorDigitado;
+  //console.log(arrayNomeCampo[posicao], posicao);
+ // console.log(arrayValorDigitado[posicao], posicao);
+}
+  
  // const [open, setOpen] = useState(false);
 
 
@@ -71,41 +76,14 @@ const hideDatePicker = () => {
   setDatePickerVisibility(false);
 };
 
-const abrirModalize =() =>{
-  modalizeRef.current?.open();
-}
-
-const reload=()=>window.location.reload();
-
 
 
   
 
-
-
-
-  const refCampo = firestore
-    .collection("Usuario")
-    .doc(auth.currentUser.uid)
-    .collection("Form")
-    .doc(auth.currentUser.uid).collection("Campos").doc();
 
      
 
-  const enviarCampos = () => {
-    refCampo
-      .set({
-        nomeCampo: nomeCampo,
-        valor: valor,
-        id: ref.id,
-      })
-      .then(() => {
-        alert("Campo " + nomeCampo + " Adicionado com Sucesso");
-        handleChange(nomeCampo);
-      });
-  };
-
-  
+    
     useEffect(() => {
       const subscriber = firestore
         .collection("Usuario")
@@ -132,38 +110,43 @@ const reload=()=>window.location.reload();
       return <ActivityIndicator />;
     }
 
+   const apagarCampo = (campo) => {
+     const refApagar = firestore
+     .collection("Usuario")
+     .doc(auth.currentUser.uid)
+     .collection("Form").doc(auth.currentUser.uid).collection("Campos")
+     .doc(campo);
+
+     refApagar.delete().then(() =>{
+      console.log("Apagou o campo")}
+     )
+   }
 
 
-
-
-
-
+   
     const ref = firestore
     .collection("Usuario")
     .doc(auth.currentUser.uid)
     .collection("Form").doc(auth.currentUser.uid).collection("Dados")
     .doc();
     
-    const enviarDadosO = () => {
-    ref.onSnapshot((querySnapshot) => {
-      const dados = [];
-      querySnapshot.forEach((documentSnapshot) => {
-        dados.set({
-       //  listaCampos[height]: listaDados[lista.height]  
-        //listaDados[lista]: listaDados[lista], 
-          ...documentSnapshot.data(),
-          key: documentSnapshot.id,
-        });
-      })
-    })
-      .then(() => {
-        alert("Dados adicionado com Sucesso");
-      } );  setDados(dados);
-            setLoading(false);
-  };
-
-
-
+    const enviarDados = () => {
+     for(let i=1;i<=lista.length;i++){
+      obj.push({
+        campo: arrayNomeCampo[i],
+        valor: arrayValorDigitado[i]
+      }) 
+      console.log(obj);
+     }
+     ref.set({
+      data: date,
+      obj      
+     }).then(() => {
+      alert("Dados adicionados com sucesso");
+      
+    } );   setLoading(false);
+     
+      };
 
 
 
@@ -222,7 +205,7 @@ const reload=()=>window.location.reload();
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
+          alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}>
         <View style={styles.centeredView}>
@@ -235,7 +218,7 @@ const reload=()=>window.location.reload();
             </Pressable>
             <Pressable
               style={[styles.buttonModal, styles.buttonModalOpen]}
-              onPress={() => {setBool('Não'), setModalVisible(!modalVisible)}}>
+              onPress={() => {setBool("Não"), setModalVisible(!modalVisible)}}>
               <Text style={styles.textStyle}>Não</Text>
             </Pressable>
           </View>
@@ -246,7 +229,7 @@ const reload=()=>window.location.reload();
     >
   <Text style={{ marginTop: 15 }}>Data do registro: </Text>
           
-          <Button title="Calendário" 
+          <Button 
           style={{width: 25, }}
           text="Calendário"
           color={"#f8bbd0"}
@@ -264,19 +247,32 @@ const reload=()=>window.location.reload();
                    <Text> {date}</Text>
         
 {listaCampos = lista.map(campoInfo => {
-                     <Text>num {campoInfo.uid} </Text>
-                                switch (campoInfo.valor) {
+  i++
+                switch (campoInfo.valor) {
                     case "String":
-                        listaDados[lista]=valorDado;
-                      //  listaCampos[lista]= campoInfo.nomeCampo;
+                      console.log(i)
                         return ( 
-                          
-                        <TextInput style={{marginTop:20} }placeholder={campoInfo.nomeCampo} value={valorDado}></TextInput>
+                          <View style={{  flexDirection: "row", justifyContent: "space-between"}}>
+                           
+                        <TextInput containerStyle={{width: "80%", } }placeholder={campoInfo.nomeCampo} 
+                        defaultValue="" 
+                       onChangeText={valorDigitado => setValores(valorDigitado, campoInfo.nomeCampo, campoInfo.tam)}
+                      ></TextInput>
+                       
+                       <Pressable style={{ borderRadius: 100, width: 40, height: 40, backgroundColor: "#0bbc9f", justifyContent: 'center', 
+    alignItems: 'center',  }} onPress={() => apagarCampo(campoInfo.id) }>  
+     <Text style={{color: 'write'  }}>X</Text>
+    </Pressable> 
+                      
+                        
+                      </View>
                           )
-                    case "Boolean":
-                      valorDado = bool;
-                      listaDados[lista]=valorDado;
-                      //listaCampos[lista]= campoInfo.nomeCampo;
+                          
+                         
+                   /* case "Boolean":
+                      valorDado[i] = bool;
+                      listaDados[i]=valorDado[i];
+                     // listaCamposSalva[lista]= campoInfo.nomeCampo;
                         return ( 
                         <Pressable
                          style={[styles.button, styles.buttonOpen]}
@@ -284,12 +280,18 @@ const reload=()=>window.location.reload();
                         <Text style={styles.textStyle}>{campoInfo.nomeCampo}: {bool}</Text>
                          </Pressable>   
                                                            
-                              )
+                              )*/
                     case "Date":
-                      listaDados[lista]=valorDado;
-                      //listaCampos[lista]= campoInfo.nomeCampo;
-                        return(  <TextInput placeholder={campoInfo.nomeCampo} value={valorDado} keyboardType={'date'}></TextInput>
-                          //<View></View>
+                    
+                     // listaCamposSalva[lista]= campoInfo.nomeCampo;
+                        return(   
+                          <TextInput style={{marginTop:20} }placeholder={campoInfo.nomeCampo} 
+                          defaultValue="" 
+                          onChangeText={valorDigitado => setValores(valorDigitado, campoInfo.nomeCampo, campoInfo.tam)}
+                          //onEndEditing={insereDado(i)}
+                          >
+                          </TextInput>
+                           //<View></View>
                         
                           /*<Text>{campoInfo.nomeCampo}
                           <DatePicker
@@ -307,33 +309,31 @@ const reload=()=>window.location.reload();
                                  }}
                                /> </Text>*/
                               )
-                    case "Select":
-                      listaDados[lista]=listaDados[campoInfo.nomeCampo];
-                        return( 
-                          <Text>{campoInfo.nomeCampo}</Text>                 
-                      
-                              )
+                   
                         }
-                      })
+                        
+                      } )
+                      
                     }
                     
-          <Button
-              text="Adicionar Campo"
+          
+        <Button
+              text="Enviar dados"
               onPress={() => {
-                abrirModalize();
-              }}
+                    enviarDados();
+                  }}
               color= {'#0bbc9f'}
               style={{
                 marginTop: 10,
                 backgroundColor: "#0bbc9f",
               }}
             />
-        
-        <Button
-              text="Enviar Formulário"
+         
+           <Button
+              text="Adicionar campos"
               onPress={() => {
-                enviarDados();
-              }}
+                navigation.navigate("CreateForm");
+                  }}
               color= {'#0bbc9f'}
               style={{
                 marginTop: 10,
@@ -345,127 +345,13 @@ const reload=()=>window.location.reload();
   </SectionContent>
         </Section>
       </View>
-      
-
-
-
-
-
-
-
-
-      <Modalize ref={modalizeRef} onClosed={reload} >
-        <KeyboardAvoidingView>
-      <ScrollView
-          contentContainerStyle={{
-            flexGrow: 1,
-          }}
-        >
-          
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Image
-              resizeMode="contain"
-              style={{
-                height: 220,
-                width: 220,
-              }}
-              source={require("../../../assets/register.png")}
-            />
-          </View>
-
-
-
-
-
-
-
-        <Section  style={{ marginHorizontal: 20, width: '90%'}} ><SectionContent>
-          <View
-            style={{
-              flex: 3,
-              paddingHorizontal: 20,
-              paddingBottom: 20,
-            }}
-          >
-          
-        <TextInput
-          placeholder="Nome do Campo"
-          value={nomeCampo}
-          onChangeText={(text) => setNomeCampo(text)}
-          //style={MeuEstilo.input}
-        />
-         <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible2}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible2);
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Escolha uma Opção</Text>
-            <Pressable
-              style={[styles.buttonModal, styles.buttonModalOpen]}
-              onPress={() => {setValorcampo('String'), setModalVisible2(!modalVisible2)}}>
-              <Text style={styles.textStyle}>Botão de texto</Text>
-            </Pressable>
-            <Pressable
-              style={[styles.buttonModal, styles.buttonModalOpen]}
-              onPress={() => {setValorcampo('Date'), setModalVisible2(!modalVisible2)}}>
-              <Text style={styles.textStyle}>Botão de hora</Text>
-            </Pressable>
-            <Pressable
-              style={[styles.buttonModal, styles.buttonModalOpen]}
-              onPress={() => {setValorcampo('Boolean'), setModalVisible2(!modalVisible2)}}>
-              <Text style={styles.textStyle}>Botão sim/não</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setModalVisible2(true)}>
-        <Text style={styles.textStyle}>Tipo {valorcampo}</Text>
-      </Pressable>
-     </View>
-     </SectionContent></Section>
-     
-      <View style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginTop: 15,
-                justifyContent: "center",
-              }}
-              >
-         <Button
-              text="Criar Formulário"
-              onPress={() => {
-                enviarCampos();
-              }}
-              color={"#0bbc9f"}
-              style={{
-                marginTop: 10,
-                color: "#0bbc9f",
-              }}
-            />
-        
-      </View>
-      </ScrollView>
-      </KeyboardAvoidingView>
-</Modalize>
     </Layout>
 
     
   );
-  //{listaCampos.value==="Hora" ?<Text>Aqui iria o TextInput {lista.length}</Text>:<Text>Este é o resultado {lista.length}</Text>}
 }
+  //{listaCampos.value==="Hora" ?<Text>Aqui iria o TextInput {lista.length}</Text>:<Text>Este é o resultado {lista.length}</Text>}
+
 
 
 

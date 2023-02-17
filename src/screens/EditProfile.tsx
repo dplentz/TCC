@@ -56,10 +56,15 @@ export default function ({ navigation })
   }, [usuario]);
 
   const handleUpdate = () => {
+    console.log(usuario.email)
+
     const reference = firestore.collection("Usuario").doc(auth.currentUser.uid);
       //reference.update({ urlfoto: fbResult.metadata.fullPath, });
-      if(email==""){
+      if(!email||!email.trim()){
+        console.log(usuario.email)
         setEmail(usuario.email);
+        console.log(email)
+
       }
       if(nome==""){
         setNome(usuario.nome);

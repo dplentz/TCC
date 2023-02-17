@@ -19,15 +19,20 @@ import {
   Button,
   useTheme,
   themeColor,
+  TopNav,
+  
 } from "react-native-rapi-ui";
+import { Ionicons } from "@expo/vector-icons";
 import { auth, firestore } from "../../navigation/firebase";
 
 
 export default function ({ navigation })
 {
+  const { isDarkmode, setTheme } = useTheme();
   const [modalVisible, setModalVisible] = useState(false)
   const [nomeCampo, setNomeCampo] = useState("");
   const [valor, setValor] = useState('');
+  let i = 0;
  // const [open, setOpen] = useState(false);
   
   const ref = firestore
@@ -38,11 +43,13 @@ export default function ({ navigation })
    
 
   const enviarDados = () => {
+    i++;
     ref
       .set({
         nomeCampo: nomeCampo,
         valor: valor,
         id: ref.id,
+        tam: i,
       })
       .then(() => {
         alert("Campo " + nomeCampo + " Adicionado com Sucesso");
@@ -71,7 +78,17 @@ export default function ({ navigation })
             flexGrow: 1,
           }}
         >
-          
+           <TopNav
+        middleContent="Editar perfil"
+        leftContent={
+          <Ionicons
+            name="chevron-back"
+            size={20}
+            color={isDarkmode ? themeColor.white100 : themeColor.black}
+          />
+        }
+        leftAction={() => navigation.goBack()}
+      />
           <View
             style={{
               flex: 1,

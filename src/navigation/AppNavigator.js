@@ -66,9 +66,9 @@ const Main = () => {
       }}
     >
       <MainStack.Screen name="MainTabs" component={MainTabs} />
+      <MainStack.Screen name="CreateForm" component={CreateForm} />
       <MainStack.Screen name="AddForm" component={AddForm} />
       <MainStack.Screen name="SecondScreen" component={SecondScreen} />
-      <MainStack.Screen name="CreateForm" component={CreateForm} />
       <MainStack.Screen name="EditProfile" component={EditProfile} />
             
     </MainStack.Navigator>
