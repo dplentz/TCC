@@ -131,20 +131,24 @@ const hideDatePicker = () => {
     .doc();
     
     const enviarDados = () => {
+      const objRef = ref.collection("obj");
      for(let i=1;i<=lista.length;i++){
-      obj.push({
+      objRef.doc().set({
         campo: arrayNomeCampo[i],
         valor: arrayValorDigitado[i]
       }) 
       console.log(obj);
      }
      ref.set({
-      data: date,
-      obj      
+      id: ref.id,
+      data: date,    
      }).then(() => {
       alert("Dados adicionados com sucesso");
       
-    } );   setLoading(false);
+    } ).catch((error) => {
+      console.log(`Erro ao adicionar dados: ${error}`);
+    });
+       setLoading(false);
      
       };
 

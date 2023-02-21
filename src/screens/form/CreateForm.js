@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/core";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   ScrollView,
   TouchableOpacity,
@@ -33,17 +33,43 @@ export default function ({ navigation })
   const [nomeCampo, setNomeCampo] = useState("");
   const [valor, setValor] = useState('');
   let i = 0;
- // const [open, setOpen] = useState(false);
-  
+  const [forms, setForms]=useState([])
   const ref = firestore
-    .collection("Usuario")
-    .doc(auth.currentUser.uid)
-    .collection("Form")
-    .doc(auth.currentUser.uid).collection("Campos").doc();
-   
+  .collection("Usuario")
+  .doc(auth.currentUser.uid)
+  .collection("Form")
+  .doc(auth.currentUser.uid).collection("Campos").doc();
+  const refId = firestore
+  .collection("Usuario")
+  .doc(auth.currentUser.uid)
+  .collection("Form")
+  .doc(auth.currentUser.uid).collection("Campos")
+ 
+ // const [open, setOpen] = useState(false);
+ useEffect(()=>{
+  refId.onSnapshot((querySnapshot) => {
+    const forms = [];
+        querySnapshot.forEach((documentSnapshot) => {
+          forms.push({
+            ...documentSnapshot.data(),
+            key: documentSnapshot.id,
+          });
+        });
+        setForms(forms)}
+       );
+  if(forms.length==undefined){
+      i++;
+    } 
+  else{
+      let id= forms.length;
+      i = id;
+  }
+ })
+ 
+ 
 
   const enviarDados = () => {
-    i++;
+    
     ref
       .set({
         nomeCampo: nomeCampo,
