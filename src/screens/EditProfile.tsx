@@ -112,16 +112,7 @@ export default function ({ navigation })
             flexGrow: 1,
           }}
         >
-          
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: isDarkmode ? "#17171E" : themeColor.white100,
-            }}
-          >
-            <TopNav
+          <TopNav
         middleContent="Editar perfil"
         leftContent={
           <Ionicons
@@ -130,8 +121,17 @@ export default function ({ navigation })
             color={isDarkmode ? themeColor.white100 : themeColor.black}
           />
         }
-        leftAction={() => navigation.goBack()}
+        leftAction={() => navigation.navigate("Profile")}
       />
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: isDarkmode ? "#17171E" : themeColor.white100,
+            }}
+          >
+            
             <Image
               resizeMode="contain"
               style={{

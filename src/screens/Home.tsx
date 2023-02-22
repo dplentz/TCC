@@ -5,8 +5,11 @@ import {
   FlatList,
   StyleSheet,
   StatusBar,
+  Image,
   TouchableOpacity,
   Modal,
+  ScrollView,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { auth, firestore } from '../navigation/firebase';
 import firebase from 'firebase/app';
@@ -21,8 +24,8 @@ import {
   themeColor,
   Section,
 } from "react-native-rapi-ui";
-import { query } from 'firebase/database';
-//import * as functions from 'firebase-functions';
+
+import { Ionicons } from "@expo/vector-icons";
 
 
 
@@ -33,7 +36,7 @@ export default function ({ navigation })  {
   const [dados, setDados]=useState([]);
   const [objNovo, setObjNovo]=useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-
+  const { isDarkmode, setTheme } = useTheme();
   const [modalData, setModalData] = useState({});
   const [modalCampoData, setModalCampoData] = useState([]);
 const [modalValorData, setModalValorData] = useState([]);
@@ -195,53 +198,92 @@ const [modalValorData, setModalValorData] = useState([]);
   }, []);
 */
   return (
-    
+    <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
+    <Layout>
     <SafeAreaView style={styles.container}>
-      
-      <Section style={{ width: "90%", height: "90%"}}> 
+      <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+          }}
+        >
+
+      <TopNav
+        middleContent={<Image
+          resizeMode="contain"
+          style={{
+            height: 200,
+            width: 200,
+          }}
+          source={require("../../assets/migraTopNav.png")}
+        />}        
+      />
+      <View
+            style={{
+              flex: 0.1,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+         
+            <Image
+              resizeMode="contain"
+              style={{
+                height: 300,
+                width: 300,
+              }}
+              source={require("../../assets/register.png")}
+            />
+          </View>
+      <Section style={{ flex: 1,width: "90%", alignSelf: "center",}}> 
 
       
       <FlatList
         data={dados}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => CamposEDados(item.id)}>
-            <Text style={{fontSize: 30,}}>{item.data}</Text>
+          <TouchableOpacity style={{alignItems: "center", padding: 10,}}onPress={() => CamposEDados(item.id)}>
+            <Text style={styles.itens}>{item.data}</Text>
           </TouchableOpacity>
         )}
       />
-           <Modal visible={modalOpen} animationType="slide">
-            <Section style={{justifyContent:"space-between",}}>
-  <View style={{width: '40%',}}
-  >
-    
-    <Text //style={styles.modalSubtitle}
-    >Campos:</Text>
+    <Modal visible={modalOpen} animationType="slide"
+        transparent={true} >
+          
+      
+            <Section style={styles.centeredView}>
+            
+          <View style={styles.modalView}> 
+    <View style={{width: "50%", alignItems:"center",}}>
+   
     <FlatList
       data={modalCampoData}
-      renderItem={({ item }) => <Text //style={styles.modalText}
-      >{item}</Text>}
+      renderItem={({ item }) => <Text style={styles.modalText}
+      >{item}:</Text>}
     />
       </View>
-    <View style={{width:'50%'}}>
+    <View style={{width: "50%", alignItems: "center",}}>
   
-    <Text // style={styles.modalSubtitle}
-    >Valores:</Text>
+   
     <FlatList
       data={modalValorData}
-      renderItem={({ item }) => <Text //style={styles.modalText}
+      renderItem={({ item }) => <Text style={styles.modalText}
       >{item}</Text>}
     />
-    <Button text="Fechar" onPress={() => setModalOpen(false)} />
   </View>
+  </View>
+  <Button text="Fechar" color={"#0bbc9f"} onPress={() => setModalOpen(false)} />
+ 
   </Section>
+  
 </Modal>
 
       
    
 
       
-        <Button
-              text="Adicionar Dados"
+       
+      </Section>
+      <Button
+              text="Adicionar Registro"
               onPress={() => {
                 navigation.navigate("AddForm");
                   }}
@@ -250,18 +292,25 @@ const [modalValorData, setModalValorData] = useState([]);
                 marginTop: 10,
                 backgroundColor: "#0bbc9f",
                 marginBottom: 10,
+                marginHorizontal: 20,
               }}
             />
-      </Section>
+            </ScrollView>
     </SafeAreaView>
+    </Layout>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
-    alignItems: "center",
+    
+  },
+  modalText: {
+    fontSize: 16,
+    color:"",
+    //backgroundColor: "grey",
   },
   item: {
     backgroundColor: '#f9c2ff',
@@ -273,17 +322,45 @@ const styles = StyleSheet.create({
     fontSize: 32,
   },
   centeredView: {
-    flex: 1,
+    marginHorizontal: "5%",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
+   
   },
   campo: {
     fontWeight: "bold",
     marginRight: 5,
   },
+  modalView: {
+    justifyContent: "space-between",
+    flexDirection: "row",
+    margin: 20,
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 15,
+  },
   valor: {
     flex: 1,
+  },
+  itens:{
+    fontSize: 25,
+    marginTop: 5, padding:10, 
+    textAlign: 'center',
+    backgroundColor: "#9fffe0",
+    width: "100%", height: 50, alignItems: "center" ,
+    marginVertical: 5,
+    borderRadius: 5,
+    opacity: 0.7,
+       
   },
 });
 

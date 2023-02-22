@@ -57,7 +57,7 @@ export default function ({ navigation })
         });
         setForms(forms)}
        );
-  if(forms.length==undefined){
+  if(forms.length==undefined||forms.length==0){
       i++;
     } 
   else{
@@ -105,7 +105,7 @@ export default function ({ navigation })
           }}
         >
            <TopNav
-        middleContent="Editar perfil"
+        middleContent="Inserir Campos"
         leftContent={
           <Ionicons
             name="chevron-back"
@@ -113,7 +113,7 @@ export default function ({ navigation })
             color={isDarkmode ? themeColor.white100 : themeColor.black}
           />
         }
-        leftAction={() => navigation.goBack()}
+        leftAction={() => navigation.navigate("AddForm")}
       />
           <View
             style={{

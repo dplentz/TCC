@@ -47,8 +47,9 @@ export default function ({navigation})
 const setValores=(valorDigitado: string, nomeCampo: any, posicao: number)=>
 { arrayNomeCampo[posicao]=nomeCampo;
   arrayValorDigitado[posicao]=valorDigitado;
-  //console.log(arrayNomeCampo[posicao], posicao);
- // console.log(arrayValorDigitado[posicao], posicao);
+
+  console.log(arrayNomeCampo[posicao], posicao);
+  console.log(arrayValorDigitado[posicao], posicao);
 }
   
  // const [open, setOpen] = useState(false);
@@ -100,6 +101,7 @@ const hideDatePicker = () => {
           setForms(forms);
         //  listaCampos = forms.nomeCampo
           lista=forms
+          console.log("lista"+lista.length);
           setLoading(false);
         });
       // Unsubscribe from events when no longer in use
@@ -144,6 +146,7 @@ const hideDatePicker = () => {
       data: date,    
      }).then(() => {
       alert("Dados adicionados com sucesso");
+      navigation.navigate("Home");
       
     } ).catch((error) => {
       console.log(`Erro ao adicionar dados: ${error}`);
@@ -160,7 +163,7 @@ const hideDatePicker = () => {
    
     <Layout>
                <TopNav
-        middleContent="Preencher diário"
+        middleContent="Preencher Registro"
         leftContent={
           <Ionicons
             name="chevron-back"

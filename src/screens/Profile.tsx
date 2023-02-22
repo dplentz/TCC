@@ -173,6 +173,16 @@ export default function ({ navigation}) {
   return (
     <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
       <Layout>
+      <TopNav
+        middleContent={<Image
+          resizeMode="contain"
+          style={{
+            height: 200,
+            width: 200,
+          }}
+          source={require("../../assets/migraTopNav.png")}
+        />}        
+      />
     <View style={styles.screen}>
       <View style={styles.buttonContainer}>
       </View>
@@ -205,7 +215,7 @@ export default function ({ navigation}) {
        abrirModalize();
      }}  
       color={"#0bbc9f"}
-      style={{ marginTop: 15, marginVertical: 5, height: 45}}
+      style={{ marginTop: 5, marginVertical: 5, height: 45}}
       />
       </SectionContent>
       </Section>
@@ -234,7 +244,7 @@ export default function ({ navigation}) {
               navigation.navigate("EditProfile");
               }}  
               color={"#f8bbd0"}
-              style={{ marginTop: 15, marginVertical: 5, height: 45}}
+              style={{ marginTop: 10, marginVertical: 5, height: 45}}
                 />
             <Button
               text="Sair"
@@ -244,6 +254,7 @@ export default function ({ navigation}) {
               color={"#f8bbd0"}
               style={{
                 marginTop: 10,
+                
                 backgroundColor: "#f8bbd0",
               }}
             />
@@ -280,7 +291,7 @@ const styles = StyleSheet.create({
     padding: 30,
   },
   itens:{
-    marginTop: 10, padding:15, 
+    marginTop: 8, padding:15, 
     textAlign: 'center',
     backgroundColor: "#9fffe0",
     width: "100%", height: 50, alignItems: "center" ,
