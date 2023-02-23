@@ -21,6 +21,7 @@ import { auth, firestore } from "../../navigation/firebase";
 //import MeuEstilo from "./meuestilo";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import TimeInput from '@tighten/react-native-time-input';
 
 export default function ({navigation})  
 { const { isDarkmode, setTheme } = useTheme();
@@ -28,14 +29,12 @@ export default function ({navigation})
   const [modalVisible, setModalVisible] = useState(false)
   const [date, setDate] = useState(""); 
    
-
+  let nomeCampo = ""
+  let tamanho = 0
   const [forms, setForms] = useState([]); // Initial empty array of users
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
   let lista=forms
  
-
-   
-  //const [nomeCampo, setNomeCampo] = useState("");
   let listaCampos = []
   let i = 0;
   let arrayValorDigitado=[]
@@ -54,7 +53,7 @@ const setValores=(valorDigitado: string, nomeCampo: any, posicao: number)=>
   
  // const [open, setOpen] = useState(false);
 
-
+ 
 
 
 
@@ -117,7 +116,7 @@ const hideDatePicker = () => {
      .collection("Usuario")
      .doc(auth.currentUser.uid)
      .collection("Form").doc(auth.currentUser.uid).collection("Campos")
-     .doc(campo);
+     .doc();
 
      refApagar.delete().then(() =>{
       console.log("Apagou o campo")}
@@ -132,15 +131,31 @@ const hideDatePicker = () => {
     .collection("Form").doc(auth.currentUser.uid).collection("Dados")
     .doc();
     
+    const refRelatorio = firestore
+    .collection("Usuario")
+    .doc(auth.currentUser.uid)
+    .collection("Relatorio");
+
     const enviarDados = () => {
+      
       const objRef = ref.collection("obj");
-     for(let i=1;i<=lista.length;i++){
+      
+      for(let i=1;i<=lista.length;i++){
+             
       objRef.doc().set({
         campo: arrayNomeCampo[i],
         valor: arrayValorDigitado[i]
       }) 
       console.log(obj);
+     refRelatorio.doc().set({
+      campo: arrayNomeCampo[i],
+      valor: arrayValorDigitado[i],
+      data: date,
+     })
      }
+     
+    
+     
      ref.set({
       id: ref.id,
       data: date,    
@@ -214,6 +229,7 @@ const hideDatePicker = () => {
         onRequestClose={() => {
           alert('Modal has been closed.');
           setModalVisible(!modalVisible);
+          setValores(bool, nomeCampo, tamanho)
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
@@ -254,10 +270,10 @@ const hideDatePicker = () => {
                    <Text> {date}</Text>
         
 {listaCampos = lista.map(campoInfo => {
-  i++
+  //i++
                 switch (campoInfo.valor) {
                     case "String":
-                      console.log(i)
+                     // console.log(i)
                         return ( 
                           <View style={{  flexDirection: "row", justifyContent: "space-between"}}>
                            
@@ -276,45 +292,28 @@ const hideDatePicker = () => {
                           )
                           
                          
-                   /* case "Boolean":
-                      valorDado[i] = bool;
-                      listaDados[i]=valorDado[i];
-                     // listaCamposSalva[lista]= campoInfo.nomeCampo;
-                        return ( 
-                        <Pressable
+                   case "Boolean":
+                       nomeCampo = campoInfo.nomeCampo
+                       tamanho = campoInfo.tam
+                        return ( <View></View>
+                      /*    <View style={{  flexDirection: "row", justifyContent: "space-between"}}>
+                          <Pressable
                          style={[styles.button, styles.buttonOpen]}
-                         onPress={() => setModalVisible(true)}>
+                         onPress={()=>{setModalVisible(true), setValores(bool, campoInfo.nomeCampo, campoInfo.tam)}} >
                         <Text style={styles.textStyle}>{campoInfo.nomeCampo}: {bool}</Text>
                          </Pressable>   
-                                                           
-                              )*/
+                         <Pressable style={{ borderRadius: 100, width: 40, height: 40, backgroundColor: "#0bbc9f", justifyContent: 'center', 
+  alignItems: 'center',  }} onPress={() => apagarCampo(campoInfo.id) }>  
+   <Text style={{color: 'write'  }}>X</Text>
+  </Pressable> 
+                          </View>  */                             
+                              )
                     case "Date":
-                    
-                     // listaCamposSalva[lista]= campoInfo.nomeCampo;
-                        return(   
-                          <TextInput style={{marginTop:20} }placeholder={campoInfo.nomeCampo} 
-                          defaultValue="" 
-                          onChangeText={valorDigitado => setValores(valorDigitado, campoInfo.nomeCampo, campoInfo.tam)}
-                          //onEndEditing={insereDado(i)}
-                          >
-                          </TextInput>
-                           //<View></View>
-                        
-                          /*<Text>{campoInfo.nomeCampo}
-                          <DatePicker
-                          value={date}
-                          selected={dados[i]}
-                          onChange={(date) => setDataNasc(date)}
-                                 customStyles={{
-                                   dateInput: {
-                                     borderWidth: 0,
-                                     alignItems: 'flex-start'
-                                   },
-                                   dateText: {
-                                     color: '#C0C0C0',
-                                   }
-                                 }}
-                               /> </Text>*/
+                       return(   
+                      <View style={{  flexDirection: "row", justifyContent: "space-between"}}>
+                              
+   
+                      </View>
                               )
                    
                         }
@@ -338,6 +337,17 @@ const hideDatePicker = () => {
          
            <Button
               text="Adicionar campos"
+              onPress={() => {
+                navigation.navigate("CreateForm");
+                  }}
+              color= {'#0bbc9f'}
+              style={{
+                marginTop: 10,
+                backgroundColor: "#0bbc9f",
+              }}
+            />
+            <Button
+              text="Apagar campos"
               onPress={() => {
                 navigation.navigate("CreateForm");
                   }}

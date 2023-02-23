@@ -58,11 +58,11 @@ export default function ({ navigation })
         setForms(forms)}
        );
   if(forms.length==undefined||forms.length==0){
-      i++;
+      i=1;
     } 
   else{
       let id= forms.length;
-      i = id;
+      i = id + 1;
   }
  })
  

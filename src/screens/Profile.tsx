@@ -161,7 +161,7 @@ export default function ({ navigation}) {
       const reference = firestore.collection("Usuario").doc(auth.currentUser.uid);
       const paraDonwload= await storage.ref(fbResult.metadata.fullPath).getDownloadURL()
       //reference.update({ urlfoto: fbResult.metadata.fullPath, });
-      reference.update({ urlfoto: paraDonwload, });
+      reference.update({ urlfoto: paraDonwload });
     }
   };
 

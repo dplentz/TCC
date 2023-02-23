@@ -34,6 +34,8 @@ import { Ionicons } from "@expo/vector-icons";
 export default function ({ navigation })  {
 
   const [dados, setDados]=useState([]);
+  const [chaves, setChaves] = useState([]);
+
   const [objNovo, setObjNovo]=useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const { isDarkmode, setTheme } = useTheme();
@@ -113,6 +115,10 @@ const [modalValorData, setModalValorData] = useState([]);
         });
      
         setDados(dados);
+        setChaves(dados);
+        for(let i=0;i<dados.length;i++){
+       
+      }
         //console.log(dados)
         //setObjetos()
         
