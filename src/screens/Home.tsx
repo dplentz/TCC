@@ -12,7 +12,6 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import { auth, firestore } from '../navigation/firebase';
-import firebase from 'firebase/app';
 import 'firebase/database';
 import {
   Layout,
@@ -25,34 +24,20 @@ import {
   Section,
 } from "react-native-rapi-ui";
 
-import { Ionicons } from "@expo/vector-icons";
-
-
 
 
 
 export default function ({ navigation })  {
 
   const [dados, setDados]=useState([]);
-  const [objNovo, setObjNovo]=useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const { isDarkmode, setTheme } = useTheme();
-  const [modalData, setModalData] = useState({});
   const [modalCampoData, setModalCampoData] = useState([]);
 const [modalValorData, setModalValorData] = useState([]);
 
 
 
 
-  
-
  
-
-
-
-
-
-
 
 
 
@@ -209,6 +194,19 @@ const [modalValorData, setModalValorData] = useState([]);
               text="Adicionar Registro"
               onPress={() => {
                 navigation.navigate("AddForm");
+                  }}
+              color= {'#0bbc9f'}
+              style={{
+                marginTop: 10,
+                backgroundColor: "#0bbc9f",
+                marginBottom: 10,
+                marginHorizontal: 20,
+              }}
+            />
+             <Button
+              text="Baixar Relatorio"
+              onPress={() => {
+                navigation.navigate("Relatorio");
                   }}
               color= {'#0bbc9f'}
               style={{
