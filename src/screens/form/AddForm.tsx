@@ -42,6 +42,20 @@ export default function ({navigation})
   //const i = useState[1];
   const [bool,setBool] = useState('');
   var obj = []
+  var ord=0
+  const [relat,setRelat]= useState([]);
+
+
+  const ref = firestore
+    .collection("Usuario")
+    .doc(auth.currentUser.uid)
+    .collection("Form").doc(auth.currentUser.uid).collection("Dados")
+    .doc();
+    
+    const refRelatorio = firestore
+    .collection("Usuario")
+    .doc(auth.currentUser.uid)
+    .collection("Relatorio");
  
 const setValores=(valorDigitado: string, nomeCampo: any, posicao: number)=>
 { arrayNomeCampo[posicao]=nomeCampo;
@@ -75,11 +89,6 @@ const handleConfirm = (date) => {
 const hideDatePicker = () => {
   setDatePickerVisibility(false);
 };
-
-
-
-  
-
 
      
 
@@ -125,18 +134,12 @@ const hideDatePicker = () => {
 
 
    
-    const ref = firestore
-    .collection("Usuario")
-    .doc(auth.currentUser.uid)
-    .collection("Form").doc(auth.currentUser.uid).collection("Dados")
-    .doc();
     
-    const refRelatorio = firestore
-    .collection("Usuario")
-    .doc(auth.currentUser.uid)
-    .collection("Relatorio");
 
     const enviarDados = () => {
+
+      
+     
       
       const objRef = ref.collection("obj");
       
@@ -147,10 +150,11 @@ const hideDatePicker = () => {
         valor: arrayValorDigitado[i]
       }) 
       console.log(obj);
+
      refRelatorio.doc().set({
       campo: arrayNomeCampo[i],
       valor: arrayValorDigitado[i],
-      data: date,
+      id: i,
      })
      }
      

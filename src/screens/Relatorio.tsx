@@ -18,7 +18,7 @@ export default function App() {
     const relat = firestore
     .collection("Usuario")
     .doc(auth.currentUser.uid)
-    .collection("Relatorio")
+    .collection("Relatorio").orderBy("data")
     .onSnapshot((querySnapshot) => {
       const relatorio = [];
       querySnapshot.forEach((documentSnapshot) => {
@@ -41,7 +41,7 @@ export default function App() {
     let string = ``
    htmlRelat = relatorio.map((relat)=>{
     string +=` <p> ${relat.data}</p>
-    <p>${relat.campo}: ${relat.valor}</p>`
+    <p>${relat.campo}: ${relat.valor}</p></br>`
     
    })
    htmlRelatorio(string)

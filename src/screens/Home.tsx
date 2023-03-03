@@ -23,6 +23,7 @@ import {
   themeColor,
   Section,
 } from "react-native-rapi-ui";
+import Relatorio from "./Relatorio"
 
 
 
@@ -87,7 +88,7 @@ const [modalValorData, setModalValorData] = useState([]);
     const subscriber = firestore
       .collection("Usuario")
       .doc(auth.currentUser.uid)
-      .collection("Form").doc(auth.currentUser.uid).collection("Dados")
+      .collection("Form").doc(auth.currentUser.uid).collection("Dados").orderBy("data", "desc")
       .onSnapshot((querySnapshot) => {
         const dados = [];
         querySnapshot.forEach((documentSnapshot) => {
@@ -109,13 +110,7 @@ const [modalValorData, setModalValorData] = useState([]);
     <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
     <Layout>
     <SafeAreaView style={styles.container}>
-      <ScrollView
-          contentContainerStyle={{
-            flexGrow: 1,
-          }}
-        >
-
-      <TopNav
+    <TopNav
         middleContent={<Image
           resizeMode="contain"
           style={{
@@ -125,6 +120,13 @@ const [modalValorData, setModalValorData] = useState([]);
           source={require("../../assets/migraTopNav.png")}
         />}        
       />
+      <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+          }}
+        >
+
+      
       <View
             style={{
               flex: 0.1,
