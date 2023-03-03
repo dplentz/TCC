@@ -25,7 +25,6 @@ import {
 } from "react-native-rapi-ui";
 import { printToFileAsync } from 'expo-print';
 import { shareAsync } from 'expo-sharing';
-import Relatorio from "./Relatorio"
 
 
 

@@ -9,11 +9,9 @@ import TabBarIcon from "../components/utils/TabBarIcon";
 import TabBarText from "../components/utils/TabBarText";
 //Screens
 import Home from "../screens/Home";
-import SecondScreen from "../screens/SecondScreen";
 import About from "../screens/About";
 import Profile from "../screens/Profile";
 import Loading from "../screens/utils/Loading";
-import Relatorio from "../screens/Relatorio"
 // Auth screens
 import Login from "../screens/auth/Login";
 import Register from "../screens/auth/Register";
@@ -67,8 +65,6 @@ const Main = () => {
       <MainStack.Screen name="MainTabs" component={MainTabs} />
       <MainStack.Screen name="CreateForm" component={CreateForm} />
       <MainStack.Screen name="AddForm" component={AddForm} />
-      <MainStack.Screen name="Relatorio" component={Relatorio} />
-      <MainStack.Screen name="SecondScreen" component={SecondScreen} />
       <MainStack.Screen name="EditProfile" component={EditProfile} />
         
     </MainStack.Navigator>
