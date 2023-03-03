@@ -182,7 +182,14 @@ const hideDatePicker = () => {
    
     <Layout>
                <TopNav
-        middleContent="Preencher Registro"
+         middleContent={<Image
+          resizeMode="contain"
+          style={{
+            height: 200,
+            width: 200,
+          }}
+          source={require("../../../assets/migraTopNav.png")}
+        />}    
         leftContent={
           <Ionicons
             name="chevron-back"
@@ -191,7 +198,8 @@ const hideDatePicker = () => {
           />
         }
         leftAction={() => navigation.goBack()}
-      /> 
+      />
+        <ScrollView>
           <View
             style={{
               flex: 0.5,
@@ -206,7 +214,7 @@ const hideDatePicker = () => {
                 height: 250,
                 width: 250,
               }}
-              source={require("../../../assets/login.png")}
+              source={require("../../../assets/ler.png")}
             />
           </View>
 
@@ -251,7 +259,7 @@ const hideDatePicker = () => {
           </View>
         </View>
       </Modal>
-      <ScrollView>
+     
     <SafeAreaView //style={MeuEstilo.containerlistar}
     >
   <Text style={{ marginTop: 15 }}>Data do registro: </Text>
@@ -276,7 +284,7 @@ const hideDatePicker = () => {
 {listaCampos = lista.map(campoInfo => {
   //i++
                 switch (campoInfo.valor) {
-                    case "String":
+                    case "Texto":
                      // console.log(i)
                         return ( 
                           <View style={{  flexDirection: "row", justifyContent: "space-between"}}>
@@ -292,33 +300,26 @@ const hideDatePicker = () => {
     </Pressable> 
                       
                         
-                      </View>
-                          )
+                      </View> )
                           
                          
-                   case "Boolean":
-                       nomeCampo = campoInfo.nomeCampo
-                       tamanho = campoInfo.tam
-                        return ( <View></View>
-                      /*    <View style={{  flexDirection: "row", justifyContent: "space-between"}}>
-                          <Pressable
-                         style={[styles.button, styles.buttonOpen]}
-                         onPress={()=>{setModalVisible(true), setValores(bool, campoInfo.nomeCampo, campoInfo.tam)}} >
-                        <Text style={styles.textStyle}>{campoInfo.nomeCampo}: {bool}</Text>
-                         </Pressable>   
-                         <Pressable style={{ borderRadius: 100, width: 40, height: 40, backgroundColor: "#0bbc9f", justifyContent: 'center', 
-  alignItems: 'center',  }} onPress={() => apagarCampo(campoInfo.id) }>  
-   <Text style={{color: 'write'  }}>X</Text>
-  </Pressable> 
-                          </View>  */                             
-                              )
-                    case "Date":
-                       return(   
+           case "Numero":
+                    return ( 
                       <View style={{  flexDirection: "row", justifyContent: "space-between"}}>
-                              
-   
-                      </View>
-                              )
+                       
+                    <TextInput containerStyle={{width: "80%", } }placeholder={campoInfo.nomeCampo} 
+                    defaultValue="" keyboardType="number-pad" 
+                   onChangeText={valorDigitado => setValores(valorDigitado, campoInfo.nomeCampo, campoInfo.tam)}
+                  ></TextInput>
+                   
+                   <Pressable style={{ borderRadius: 100, width: 40, height: 40, backgroundColor: "#0bbc9f", justifyContent: 'center', 
+alignItems: 'center',  }} onPress={() => apagarCampo(campoInfo.id) }>  
+ <Text style={{color: 'write'  }}>X</Text>
+</Pressable> 
+                  
+                    
+                  </View>
+                      )
                    
                         }
                         
@@ -362,10 +363,11 @@ const hideDatePicker = () => {
               }}
             />
   </SafeAreaView>
-  </ScrollView>
+  
   </SectionContent>
         </Section>
       </View>
+      </ScrollView>
     </Layout>
 
     

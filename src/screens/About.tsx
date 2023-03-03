@@ -94,6 +94,7 @@ textFont:{
 	fontSize: 20,
 	textAlign: "center",
 	paddingHorizontal: 15,
+	padding:10,
 
 },
 text:{

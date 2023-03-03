@@ -23,6 +23,8 @@ import {
   themeColor,
   Section,
 } from "react-native-rapi-ui";
+import { printToFileAsync } from 'expo-print';
+import { shareAsync } from 'expo-sharing';
 import Relatorio from "./Relatorio"
 
 
@@ -33,7 +35,65 @@ export default function ({ navigation })  {
   const [dados, setDados]=useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalCampoData, setModalCampoData] = useState([]);
-const [modalValorData, setModalValorData] = useState([]);
+  const [modalValorData, setModalValorData] = useState([]);
+  const [relatorio, setRelatorio] = useState([]);
+  let html = ``;
+
+  // Relatorio
+  useEffect(()=>{
+    const relat = firestore
+    .collection("Usuario")
+    .doc(auth.currentUser.uid)
+    .collection("Relatorio").orderBy("data")
+    .onSnapshot((querySnapshot) => {
+      const relatorio = [];
+      querySnapshot.forEach((documentSnapshot) => {
+        relatorio.push({
+          ...documentSnapshot.data(),
+          key: documentSnapshot.id,
+        });
+      });
+   
+      setRelatorio(relatorio);
+      console.log(relatorio)
+      //setObjetos()
+      
+    });
+    return () => relat();
+  }, [])
+  
+  let createHTML = async () => {
+    let htmlRelat
+    let string = ``
+   htmlRelat = relatorio.map((relat)=>{
+    string +=` <p> ${relat.data}</p>
+    <p>${relat.campo}: ${relat.valor}</p></br>`
+    
+   })
+   htmlRelatorio(string)
+    ;}
+
+   const htmlRelatorio = (string) =>{
+    html = `
+    <html>
+      <body>
+        
+        ${string}
+      </body>
+    </html>
+  `;
+   }
+
+   let generatePdf = async () => {
+    createHTML();
+    const file = await printToFileAsync({
+      html: html,
+      base64: false
+    });
+
+    await shareAsync(file.uri);
+  };
+
 
 
 
@@ -43,7 +103,7 @@ const [modalValorData, setModalValorData] = useState([]);
 
 
  
- 
+ //Mostrar na tela 
   const CamposEDados = (chave) =>
   {
       for(let tam=0;tam<dados.length;tam++){
@@ -208,7 +268,7 @@ const [modalValorData, setModalValorData] = useState([]);
              <Button
               text="Baixar Relatorio"
               onPress={() => {
-                navigation.navigate("Relatorio");
+                generatePdf()
                   }}
               color= {'#0bbc9f'}
               style={{

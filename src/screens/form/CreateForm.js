@@ -83,16 +83,6 @@ export default function ({ navigation })
       });
   };
 
-  /*<RNPickerSelect
-                 value={valor}
-                 onValueChange={(valor) => setValor(valor)}
-                 items={[
-                     { label: "Texto", value: "text" },
-                     { label: "Seleção", value: "select" },
-                     { label: "Horário", value: "hour" },
-                 ]}
-                 style={{ inputAndroid: { color: "black" } }} useNativeAndroidPickerStyle={false}
-             />*/
 
 
   return (
@@ -105,7 +95,14 @@ export default function ({ navigation })
           }}
         >
            <TopNav
-        middleContent="Inserir Campos"
+        middleContent={<Image
+          resizeMode="contain"
+          style={{
+            height: 200,
+            width: 200,
+          }}
+          source={require("../../../assets/migraTopNav.png")}
+        />}   
         leftContent={
           <Ionicons
             name="chevron-back"
@@ -128,7 +125,7 @@ export default function ({ navigation })
                 height: 220,
                 width: 220,
               }}
-              source={require("../../../assets/register.png")}
+              source={require("../../../assets/ideia.png")}
             />
           </View>
         <Section  style={{ marginHorizontal: 20}} ><SectionContent>
@@ -159,19 +156,15 @@ export default function ({ navigation })
             <Text style={styles.modalText}>Escolha uma Opção</Text>
             <Pressable
               style={[styles.button, styles.buttonClose]}
-              onPress={() => {setValor('String'), setModalVisible(!modalVisible)}}>
-              <Text style={styles.textStyle}>Botão de texto</Text>
+              onPress={() => {setValor('Texto'), setModalVisible(!modalVisible)}}>
+              <Text style={styles.textStyle}>Vou inserir um texto</Text>
             </Pressable>
             <Pressable
               style={[styles.button, styles.buttonClose]}
-              onPress={() => {setValor('Date'), setModalVisible(!modalVisible)}}>
-              <Text style={styles.textStyle}>Botão de horário</Text>
+              onPress={() => {setValor('Numero'), setModalVisible(!modalVisible)}}>
+              <Text style={styles.textStyle}>Vou inserir um número</Text>
             </Pressable>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => {setValor('Boolean'), setModalVisible(!modalVisible)}}>
-              <Text style={styles.textStyle}>Botão sim/não</Text>
-            </Pressable>
+            
           </View>
         </View>
       </Modal>

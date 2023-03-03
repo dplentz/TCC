@@ -81,17 +81,7 @@ export default function ({ navigation })
         setLoading(false);
       } );
   };
- /* <RNPickerSelect
-  value={genero}
-  onValueChange={(genero) => setGenero(genero)}
-  items={[
-      { label: "Feminino", value: "Feminino" },
-      { label: "Masculino", value: "Masculino" },
-      { label: "Não binário", value: "N/B" },
-  ]}
-  style={{ inputAndroid: { color: "black" } }} useNativeAndroidPickerStyle={false}
-/>        
-*/
+
   return (
     <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
       <Layout>
@@ -115,7 +105,7 @@ export default function ({ navigation })
                 height: 220,
                 width: 220,
               }}
-              source={require("../../../assets/register.png")}
+              source={require("../../../assets/registro.png")}
             />
           </View>
           <View
