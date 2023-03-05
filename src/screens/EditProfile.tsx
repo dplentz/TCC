@@ -28,6 +28,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { auth, firestore } from "../navigation/firebase";
 import { Ionicons } from "@expo/vector-icons";
 import { Usuario } from "../../model/Usuario";
+import { set } from "firebase/database";
 
 export default function ({ navigation }) 
 { const [modalVisible, setModalVisible] = useState(false)
@@ -38,11 +39,10 @@ export default function ({ navigation })
   const [genero, setGenero] = useState("");
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [dataString, setDataString]=useState('');
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [usuario, setUsuario] = useState<Partial<Usuario>>({});
+ 
 
   useEffect(() => {
     const subscriber = firestore
@@ -52,6 +52,7 @@ export default function ({ navigation })
         setUsuario(documentSnapshot.data());
         setLoading(false)
       });
+
     return () => subscriber();
   }, [usuario]);
 
@@ -60,24 +61,9 @@ export default function ({ navigation })
 
     const reference = firestore.collection("Usuario").doc(auth.currentUser.uid);
       //reference.update({ urlfoto: fbResult.metadata.fullPath, });
-      if(!email||!email.trim()){
-        console.log(usuario.email)
-        setEmail(usuario.email);
-        console.log(email)
-
-      }
-      if(nome==""){
-        setNome(usuario.nome);
-      }
-      if(dataString==""){
-        setDataNasc(usuario.dataNasc);
-        setDataString(usuario.dataString);
-      }
-      if(genero==""){
-        setGenero(usuario.genero);
-      }
+      
       reference.update(
-        { email: email, 
+        {
           nome: nome,
           genero: genero,
           dataNasc: dataNasc,
@@ -159,17 +145,7 @@ export default function ({ navigation })
             >
               Registro
             </Text>
-            <Text>Email: </Text>
-            <TextInput
-              containerStyle={{ marginTop: 15 }}
-              placeholder={usuario.email}
-              value={email}
-              autoCapitalize="none"
-             // autoCompleteType="off"
-              autoCorrect={false}
-              keyboardType="email-address"
-              onChangeText={(text) => {setEmail(text)}}
-            />
+          
             <Text style={{ marginTop: 15 }}>Nome: </Text>
             <TextInput
               containerStyle={{ marginTop: 15 }}
@@ -179,7 +155,7 @@ export default function ({ navigation })
               //autoCompleteType="off"
               autoCorrect={false}
               keyboardType="default"////////
-              onChangeText={(text) => setNome(text)}
+              onChangeText={(text) =>setNome(text)}
             />
            
             <Text style={{ marginTop: 15 }}>Data de aniversário:  </Text>

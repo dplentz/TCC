@@ -16,17 +16,14 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import  { Button, Layout, Section, SectionContent, TextInput,useTheme, themeColor,TopNav,} from "react-native-rapi-ui";
-import {Modalize} from 'react-native-modalize';
 import { auth, firestore } from "../../navigation/firebase";
-//import MeuEstilo from "./meuestilo";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import TimeInput from '@tighten/react-native-time-input';
+
 
 export default function ({navigation})  
 { const { isDarkmode, setTheme } = useTheme();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false)
+
   const [date, setDate] = useState(""); 
    
   let nomeCampo = ""
@@ -40,10 +37,8 @@ export default function ({navigation})
   let arrayValorDigitado=[]
   let arrayNomeCampo = [];
   //const i = useState[1];
-  const [bool,setBool] = useState('');
   var obj = []
-  var ord=0
-  const [relat,setRelat]= useState([]);
+ 
 
 
   const ref = firestore
@@ -125,12 +120,25 @@ const hideDatePicker = () => {
      .collection("Usuario")
      .doc(auth.currentUser.uid)
      .collection("Form").doc(auth.currentUser.uid).collection("Campos")
-     .doc();
+     .doc(campo);
 
      refApagar.delete().then(() =>{
       console.log("Apagou o campo")}
      )
    }
+
+   const apagarCampos = () => {
+    for(let a=0;a<lista.length;a++){
+    const refApagar = firestore
+    .collection("Usuario")
+    .doc(auth.currentUser.uid)
+    .collection("Form").doc(auth.currentUser.uid).collection("Campos").doc(lista[a].id)
+
+    refApagar.delete().then(() =>{
+      console.log("Apagou o campo")}
+     )
+    }
+  }
 
 
    
@@ -234,31 +242,7 @@ const hideDatePicker = () => {
       
       <Section style={ {width: "90%", height:"100%"}}>
         <SectionContent>
-        <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-          setValores(bool, nomeCampo, tamanho)
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Escolha uma Opção</Text>
-            <Pressable
-              style={[styles.buttonModal, styles.buttonModalOpen]}
-              onPress={() => {setBool('Sim'), setModalVisible(!modalVisible)}}>
-              <Text style={styles.textStyle}>Sim</Text>
-            </Pressable>
-            <Pressable
-              style={[styles.buttonModal, styles.buttonModalOpen]}
-              onPress={() => {setBool("Não"), setModalVisible(!modalVisible)}}>
-              <Text style={styles.textStyle}>Não</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
+        
      
     <SafeAreaView //style={MeuEstilo.containerlistar}
     >
@@ -283,9 +267,7 @@ const hideDatePicker = () => {
         
 {listaCampos = lista.map(campoInfo => {
   //i++
-                switch (campoInfo.valor) {
-                    case "Texto":
-                     // console.log(i)
+                
                         return ( 
                           <View style={{  flexDirection: "row", justifyContent: "space-between"}}>
                            
@@ -298,32 +280,13 @@ const hideDatePicker = () => {
     alignItems: 'center',  }} onPress={() => apagarCampo(campoInfo.id) }>  
      <Text style={{color: 'write'  }}>X</Text>
     </Pressable> 
+                       
                       
                         
                       </View> )
-                          
-                         
-           case "Numero":
-                    return ( 
-                      <View style={{  flexDirection: "row", justifyContent: "space-between"}}>
-                       
-                    <TextInput containerStyle={{width: "80%", } }placeholder={campoInfo.nomeCampo} 
-                    defaultValue="" keyboardType="number-pad" 
-                   onChangeText={valorDigitado => setValores(valorDigitado, campoInfo.nomeCampo, campoInfo.tam)}
-                  ></TextInput>
-                   
-                   <Pressable style={{ borderRadius: 100, width: 40, height: 40, backgroundColor: "#0bbc9f", justifyContent: 'center', 
-alignItems: 'center',  }} onPress={() => apagarCampo(campoInfo.id) }>  
- <Text style={{color: 'write'  }}>X</Text>
-</Pressable> 
-                  
-                    
-                  </View>
-                      )
-                   
-                        }
-                        
-                      } )
+                                 
+                        }  
+                    )
                       
                     }
                     
@@ -354,7 +317,8 @@ alignItems: 'center',  }} onPress={() => apagarCampo(campoInfo.id) }>
             <Button
               text="Apagar campos"
               onPress={() => {
-                navigation.navigate("CreateForm");
+                apagarCampos();
+                //navigation.navigate("CreateForm");
                   }}
               color= {'#0bbc9f'}
               style={{
@@ -373,8 +337,7 @@ alignItems: 'center',  }} onPress={() => apagarCampo(campoInfo.id) }>
     
   );
 }
-  //{listaCampos.value==="Hora" ?<Text>Aqui iria o TextInput {lista.length}</Text>:<Text>Este é o resultado {lista.length}</Text>}
-
+ 
 
 
 

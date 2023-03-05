@@ -73,7 +73,6 @@ export default function ({ navigation })
     ref
       .set({
         nomeCampo: nomeCampo,
-        valor: valor,
         id: ref.id,
         tam: i,
       })
@@ -143,36 +142,8 @@ export default function ({ navigation })
           onChangeText={(text) => setNomeCampo(text)}
           //style={MeuEstilo.input}
         />
-         <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Escolha uma Opção</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => {setValor('Texto'), setModalVisible(!modalVisible)}}>
-              <Text style={styles.textStyle}>Vou inserir um texto</Text>
-            </Pressable>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => {setValor('Numero'), setModalVisible(!modalVisible)}}>
-              <Text style={styles.textStyle}>Vou inserir um número</Text>
-            </Pressable>
-            
-          </View>
-        </View>
-      </Modal>
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setModalVisible(true)}>
-        <Text style={styles.textStyle}>Tipo {valor}</Text>
-      </Pressable>
+       
+      
      </View>
      </SectionContent></Section>
       </ScrollView>
