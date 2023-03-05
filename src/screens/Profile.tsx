@@ -51,18 +51,17 @@ export default function ({ navigation}) {
     var user = auth.currentUser;
     var userDel = firestore
     .collection('Usuario')
-    .doc(auth.currentUser.uid);
+    .doc(usuario.id);
     user.delete().then(function() {
       navigation.navigate("Login"); 
   // User deleted.
 })
    // user?.delete
-    userDel.delete().then(function() {
-      navigation.navigate("Login"); 
+    //userDel.delete().then(function() {
+      //navigation.navigate("Login"); 
   // User deleted.
-}).catch(function(error) {
-  // An error happened.
-});
+//}).catch(function(error) {
+  // An error happened; });
    
   }
 
@@ -201,10 +200,16 @@ export default function ({ navigation}) {
      
 
 <Section style={{width: '90%', height:'65%', }}><SectionContent> 
+  <Pressable onLongPress={()=> navigation.navigate("EditNome")}>
        <Text style={styles.itens}>Nome: {usuario.nome}</Text>
+  </Pressable>
        <Text style={styles.itens}>E-mail: {usuario.email}</Text>
+  <Pressable onLongPress={()=> navigation.navigate("EditGenero")}>
        <Text style={styles.itens}>Gênero: {usuario.genero}</Text>
+  </Pressable>
+  <Pressable onLongPress={()=> navigation.navigate("EditData")}>
        <Text style={styles.itens}>Data de nascimento: {usuario.dataString}</Text>
+  </Pressable>
        
        <Button text="Escolher a foto" onPress={escolhefoto}  
       color={"#0bbc9f"}
@@ -220,7 +225,7 @@ export default function ({ navigation}) {
       </SectionContent>
       </Section>
     
-      <Modalize ref={modalizeRef} snapPoint={300}>
+      <Modalize ref={modalizeRef} snapPoint={250}>
        
           <Section>
             <SectionContent>
@@ -240,12 +245,7 @@ export default function ({ navigation}) {
                 marginTop: 10,
               }}
             />
-             <Button text="Alterar dados do perfil" onPress={() => {
-              navigation.navigate("EditProfile");
-              }}  
-              color={"#f8bbd0"}
-              style={{ marginTop: 10, marginVertical: 5, height: 45}}
-                />
+             
             <Button
               text="Sair"
               onPress={() => {

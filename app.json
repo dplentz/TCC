@@ -15,10 +15,18 @@
 		},
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
-			"supportsTablet": true
+			"supportsTablet": true,
+			"bundleIdentifier": "com.mariaeduarda.migra"
 		},
 		"web": {
 			"favicon": "./assets/favicon.png"
-		}
+		},
+		"android": {
+			"package": "com.mariaeduarda.migra"
+		},
+		"plataforms": [
+			"ios", "android"
+		]
+	
 	}
 }

@@ -18,7 +18,9 @@ import Register from "../screens/auth/Register";
 import ForgetPassword from "../screens/auth/ForgetPassword";
 import CreateForm from "../screens/form/CreateForm";
 import AddForm from "../screens/form/AddForm";
-import EditProfile from "../screens/EditProfile";
+import EditNome from "../Edits/EditNome";
+import EditData from "../Edits/EditData";
+import EditGenero from "../Edits/EditGenero";
 import { AuthContext } from "../provider/AuthProvider";
 
 //import firebase from "firebase/compat/app";
@@ -65,7 +67,10 @@ const Main = () => {
       <MainStack.Screen name="MainTabs" component={MainTabs} />
       <MainStack.Screen name="CreateForm" component={CreateForm} />
       <MainStack.Screen name="AddForm" component={AddForm} />
-      <MainStack.Screen name="EditProfile" component={EditProfile} />
+      <MainStack.Screen name="EditNome" component={EditNome} />
+      <MainStack.Screen name="EditData" component={EditData} />
+      <MainStack.Screen name="EditGenero" component={EditGenero} />
+      
         
     </MainStack.Navigator>
   );

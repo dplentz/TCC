@@ -19,8 +19,8 @@ import {
 export default function ({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
   const auth = getAuth();
-  const [email, setEmail] = useState("dudaplentz18@gmail.com");
-  const [password, setPassword] = useState("deskjet");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function login() {
@@ -83,7 +83,7 @@ export default function ({ navigation }) {
             <Text>Email</Text>
             <TextInput
               containerStyle={{ marginTop: 15 }}
-              placeholder="Enter your email"
+              placeholder="Insira seu email"
               value={email}
               autoCapitalize="none"
               autoCompleteType="off"
@@ -95,7 +95,7 @@ export default function ({ navigation }) {
             <Text style={{ marginTop: 15 }}>Password</Text>
             <TextInput
               containerStyle={{ marginTop: 15 }}
-              placeholder="Enter your password"
+              placeholder="Insira sua senha"
               value={password}
               autoCapitalize="none"
               autoCompleteType="off"

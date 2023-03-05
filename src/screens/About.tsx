@@ -1,15 +1,12 @@
 import React, {useRef} from 'react';
 import { View, Linking, Image, StyleSheet, KeyboardAvoidingView, ScrollView, Pressable } from 'react-native';
 import { Layout, Text, Button, TopNav, Section } from 'react-native-rapi-ui';
-import { Modalize } from "react-native-modalize";
+
 
 export default function ({ navigation }) {
 	
 
-	const modalizeRef = useRef(null)
-	const abrirModalize =() =>{
-		modalizeRef.current?.open();
-	 }
+	
 	return (
 		<KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
 			
@@ -54,7 +51,7 @@ export default function ({ navigation }) {
 				 especializados para avaliação dos melhores
 				  métodos de redução de crises e de dores.
 				</Text>
-				<Image source={require("../../assets/ideia.png")}
+				<Image source={require("../../assets/dicas.png")}
               style={styles.image} />
 			  <Text style={styles.textFont}>
 			  Dicas para evitar crises de cefaleia: </Text>

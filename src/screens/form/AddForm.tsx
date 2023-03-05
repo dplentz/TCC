@@ -160,6 +160,7 @@ const hideDatePicker = () => {
       console.log(obj);
 
      refRelatorio.doc().set({
+      data: date,
       campo: arrayNomeCampo[i],
       valor: arrayValorDigitado[i],
       id: i,
