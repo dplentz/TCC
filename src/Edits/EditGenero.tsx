@@ -145,6 +145,16 @@ export default function ({ navigation })
             </Pressable>
             <Pressable
               style={[styles.button, styles.buttonClose]}
+              onPress={() => {setGenero('Feminino transgênero'), setModalVisible(!modalVisible)}}>
+              <Text style={styles.textStyle}>Feminino transgêreno</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => {setGenero('Masculino transgênero'), setModalVisible(!modalVisible)}}>
+              <Text style={styles.textStyle}>Masculino transgênero</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
               onPress={() => {setGenero('Outro'), setModalVisible(!modalVisible)}}>
               <Text style={styles.textStyle}>Outro</Text>
             </Pressable>

@@ -25,6 +25,7 @@ import {
 } from "react-native-rapi-ui";
 import { printToFileAsync } from 'expo-print';
 import { shareAsync } from 'expo-sharing';
+import { Usuario } from "../../model/Usuario";
 
 
 
@@ -35,10 +36,21 @@ export default function ({ navigation })  {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalCampoData, setModalCampoData] = useState([]);
   const [modalValorData, setModalValorData] = useState([]);
+  const [usuario,setUsuario] = useState<Partial<Usuario>>({});
   const [relatorio, setRelatorio] = useState([]);
   let html = ``;
 
   // Relatorio
+  useEffect(()=>{
+    const user = firestore
+    .collection('Usuario')
+    .doc(auth.currentUser.uid)
+    .onSnapshot(documentSnapshot => {
+      setUsuario(documentSnapshot.data());
+    });
+    return () => user();
+  }, [usuario])
+
   useEffect(()=>{
     const relat = firestore
     .collection("Usuario")
@@ -76,7 +88,12 @@ export default function ({ navigation })  {
     html = `
     <html>
       <body>
-        
+      <h3>  Nome: ${usuario.nome}  </h3>
+      <p>  Email: ${usuario.email} </p>
+      <p>     Data de nascimento: ${usuario.dataString} </p>
+      <p>     Gênero: ${usuario.genero}</p>
+      </br>
+       
         ${string}
       </body>
     </html>

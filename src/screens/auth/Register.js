@@ -8,6 +8,7 @@ import {
   Image,
   StyleSheet,
   Pressable,
+  Alert,
 } from "react-native";
 //import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 //import { auth } from "../../navigation/AppNavigator";
@@ -179,13 +180,13 @@ export default function ({ navigation })
                      <Text> {dataString}</Text>
 
             
-              <Text style={{ marginTop: 15 }}>Gênero: </Text>
+              <Text style={{ marginTop: 15 }}>Gênero biológico: </Text>
               <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
+          //Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}>
         <View style={styles.centeredView}>
@@ -200,6 +201,16 @@ export default function ({ navigation })
               style={[styles.button, styles.buttonClose]}
               onPress={() => {setGenero('Feminino'), setModalVisible(!modalVisible)}}>
               <Text style={styles.textStyle}>Feminino</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => {setGenero('Feminino transgênero'), setModalVisible(!modalVisible)}}>
+              <Text style={styles.textStyle}>Feminino transgêreno</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => {setGenero('Masculino transgênero'), setModalVisible(!modalVisible)}}>
+              <Text style={styles.textStyle}>Masculino transgênero</Text>
             </Pressable>
             <Pressable
               style={[styles.button, styles.buttonClose]}
