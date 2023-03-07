@@ -77,8 +77,8 @@ export default function ({ navigation })  {
     let htmlRelat
     let string = ``
    htmlRelat = relatorio.map((relat)=>{
-    string +=` <p> ${relat.data}</p>
-    <p>${relat.campo}: ${relat.valor}</p></br>`
+    string +=` <h3> ${relat.data}</h3>
+    <p>${relat.campo}: ${relat.valor}</p>`
     
    })
    htmlRelatorio(string)
@@ -88,11 +88,11 @@ export default function ({ navigation })  {
     html = `
     <html>
       <body>
-      <img src="https://github.com/dplentz/TCC/blob/master/assets/relatorio.png?raw=true" width="80%"/>
-      <h3>  Nome: ${usuario.nome}  </h3>
-      <p>  Email: ${usuario.email} </p>
-      <p>   Data de nascimento: ${usuario.dataString} </p>
-      <p>  Gênero: ${usuario.genero}</p>
+      <img src="https://github.com/dplentz/TCC/blob/master/assets/relatorio.png?raw=true" width="100%"/>
+      <h2>  Nome: ${usuario.nome}  </h2>
+      <h3>  Email: ${usuario.email} </h3>
+      <h3>   Data de nascimento: ${usuario.dataString} </h3>
+      <h3>  Gênero: ${usuario.genero}</h3>
       </br>
        
         ${string}
