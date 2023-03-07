@@ -88,9 +88,10 @@ export default function ({ navigation })  {
     html = `
     <html>
       <body>
+      <img src="https:TCC/assets/relatorio.jpg.com" width="50"/>
       <h3>  Nome: ${usuario.nome}  </h3>
       <p>  Email: ${usuario.email} </p>
-      <p>     Data de nascimento: ${usuario.dataString} </p>
+      <p>   Data de nascimento: ${usuario.dataString} </p>
       <p>     Gênero: ${usuario.genero}</p>
       </br>
        
