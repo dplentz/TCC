@@ -225,57 +225,57 @@ export default function ({ navigation}) {
       </SectionContent>
       </Section>
     
-      <Modalize ref={modalizeRef} snapPoint={250}>
-       
-          <Section>
-            <SectionContent>
-                        
-         <Button
-              text={isDarkmode ? "Modo Claro" : "Modo Escuro"}
-              status={isDarkmode ? "success" : "warning"}
-              onPress={() => {
-                if (isDarkmode) {
-                  setTheme("light");
-                } else {
-                  setTheme("dark");
-                }
-              }}
-              color={"#f8bbd0"}
-              style={{
-                marginTop: 10,
-              }}
-            />
-             
-            <Button
-              text="Sair"
-              onPress={() => {
-                signOut(auth);
-              }}
-              color={"#f8bbd0"}
-              style={{
-                marginTop: 10,
-                
-                backgroundColor: "#f8bbd0",
-              }}
-            />
-              <Button
-              status="danger"
-              text="Excluir conta"
-              onPress={() => {
-                deletarUsuario();
-              }}
-              color={"#c48b9f"}
-              style={{
-                marginTop: 10,
-                backgroundColor: "#0bbc7d",
-              }}
-            />
-            </SectionContent></Section>
-       
-        
-        </Modalize>   
+     
     </View>
     </Layout>
+    <Modalize ref={modalizeRef} snapPoint={250}>
+       
+         
+                        
+       <Button
+            text={isDarkmode ? "Modo Claro" : "Modo Escuro"}
+            status={isDarkmode ? "success" : "warning"}
+            onPress={() => {
+              if (isDarkmode) {
+                setTheme("light");
+              } else {
+                setTheme("dark");
+              }
+            }}
+            color={"#f8bbd0"}
+            style={{
+              marginTop: 10,
+            }}
+          />
+           
+          <Button
+            text="Sair"
+            onPress={() => {
+              signOut(auth);
+            }}
+            color={"#f8bbd0"}
+            style={{
+              marginTop: 10,
+              
+              backgroundColor: "#f8bbd0",
+            }}
+          />
+            <Button
+            status="danger"
+            text="Excluir conta"
+            onPress={() => {
+              deletarUsuario();
+            }}
+            color={"#c48b9f"}
+            style={{
+              marginTop: 10,
+              backgroundColor: "#0bbc7d",
+            }}
+          />
+         
+     
+      
+      </Modalize>   
     </KeyboardAvoidingView>
     
   );

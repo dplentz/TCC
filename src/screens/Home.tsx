@@ -215,13 +215,14 @@ export default function ({ navigation })  {
             <Image
               resizeMode="contain"
               style={{
-                height: 300,
-                width: 300,
+                height: 250,
+                width: 250,
               }}
               source={require("../../assets/register.png")}
             />
           </View>
-      <Section style={{ flex: 1,width: "90%", alignSelf: "center",}}> 
+          </ScrollView>
+      <Section style={{ flex: 20,width: "90%", alignSelf: "center"}}> 
 
       
       <FlatList
@@ -257,7 +258,7 @@ export default function ({ navigation })  {
     />
   </View>
   </View>
-  <Button text="Fechar" color={"#0bbc9f"} onPress={() => setModalOpen(false)} />
+  <Button text="Fechar" color={"#f8bbd0"} style={{marginBottom: 10}} onPress={() => setModalOpen(false)} />
  
   </Section>
   
@@ -295,7 +296,7 @@ export default function ({ navigation })  {
                 marginHorizontal: 20,
               }}
             />
-            </ScrollView>
+           
     </SafeAreaView>
     </Layout>
     </KeyboardAvoidingView>
@@ -309,7 +310,7 @@ const styles = StyleSheet.create({
   },
   modalText: {
     fontSize: 16,
-    color:"",
+    color:"#c48b9f",
     //backgroundColor: "grey",
   },
   item: {
@@ -339,19 +340,20 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: '#f8bbd0',
     shadowOffset: {
       width: 0,
       height: 2,
     },
     shadowOpacity: 0.1,
     shadowRadius: 2,
-    elevation: 15,
+    elevation: 5,
   },
   valor: {
     flex: 1,
   },
   itens:{
+    
     fontSize: 25,
     marginTop: 5, padding:10, 
     textAlign: 'center',

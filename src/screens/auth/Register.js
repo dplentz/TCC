@@ -180,7 +180,7 @@ export default function ({ navigation })
                      <Text> {dataString}</Text>
 
             
-              <Text style={{ marginTop: 15 }}>Gênero biológico: </Text>
+              <Text style={{ marginTop: 15 }}>Gênero: </Text>
               <Modal
         animationType="slide"
         transparent={true}

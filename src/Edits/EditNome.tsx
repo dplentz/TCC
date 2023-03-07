@@ -62,6 +62,17 @@ export default function ({ navigation })
   return (
     <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
       <Layout>
+      <TopNav
+        middleContent="Editar nome"
+        leftContent={
+          <Ionicons
+            name="chevron-back"
+            size={20}
+            color={isDarkmode ? themeColor.white100 : themeColor.black}
+          />
+        }
+        leftAction={() => navigation.goBack()}
+      />
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
@@ -76,17 +87,7 @@ export default function ({ navigation })
               backgroundColor: isDarkmode ? "#17171E" : themeColor.white100,
             }}
           >
-            <TopNav
-        middleContent="Editar nome"
-        leftContent={
-          <Ionicons
-            name="chevron-back"
-            size={20}
-            color={isDarkmode ? themeColor.white100 : themeColor.black}
-          />
-        }
-        leftAction={() => navigation.goBack()}
-      />
+            
             <Image
               resizeMode="contain"
               style={{
