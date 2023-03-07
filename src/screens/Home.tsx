@@ -88,11 +88,11 @@ export default function ({ navigation })  {
     html = `
     <html>
       <body>
-      <img src="https://github.com/dplentz/TCC/blob/master/assets/relatorio.png?raw=true" width="100%"/>
+      <img src="https://github.com/dplentz/TCC/blob/master/assets/relatorio.png?raw=true" width="80%"/>
       <h3>  Nome: ${usuario.nome}  </h3>
       <p>  Email: ${usuario.email} </p>
       <p>   Data de nascimento: ${usuario.dataString} </p>
-      <p>     Gênero: ${usuario.genero}</p>
+      <p>  Gênero: ${usuario.genero}</p>
       </br>
        
         ${string}
